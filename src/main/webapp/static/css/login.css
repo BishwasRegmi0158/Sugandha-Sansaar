@@ -1,0 +1,270 @@
+/* ============================================================
+   Sugandha Sansaar - Login CSS
+   Dark gradient background, light glassmorphic form card
+   ============================================================ */
+
+/* ---------- Global Reset ---------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ---------- Body: Dark gradient background, centering ---------- */
+body {
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* Deep night-sky gradient: dark purple to midnight blue */
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* ---------- Main container for login page ---------- */
+.login-page {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    animation: fadeInUp 0.6s ease-out;   /* subtle entrance animation */
+}
+
+/* ---------- Header with logo and title ---------- */
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-header img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2));
+    transition: transform 0.3s ease;
+}
+
+.login-header img:hover {
+    transform: scale(1.05);   /* slight zoom on hover */
+}
+
+.login-header h1 {
+    color: white;
+    font-size: 2rem;
+    margin-top: 12px;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+}
+
+/* ---------- Form card: light, rounded, with soft shadow ---------- */
+.login-form {
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(2px);
+    border-radius: 28px;
+    padding: 40px 35px;
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-form:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5);
+}
+
+/* ---------- Form heading with decorative underline ---------- */
+.login-form h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #1e2a47;
+    font-weight: 700;
+    font-size: 1.9rem;
+    letter-spacing: -0.5px;
+    position: relative;
+}
+
+.login-form h2::after {
+    content: '';
+    display: block;
+    width: 70px;
+    height: 4px;
+    background: linear-gradient(90deg, #2a5298, #6b4e9e);
+    margin: 12px auto 0;
+    border-radius: 4px;
+}
+
+/* ---------- Input fields styling ---------- */
+.login-form input[type="email"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #f9fafc;
+    font-family: inherit;
+    outline: none;
+}
+
+/* Focus state: purple border + soft glow */
+.login-form input:focus {
+    border-color: #6b4e9e;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(107, 78, 158, 0.15);
+}
+
+.login-form input::placeholder {
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+/* ---------- "Remember me" checkbox group ---------- */
+.checkbox-group {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.checkbox-group label {
+    color: #475569;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.checkbox-group input {
+    width: auto;
+    margin: 0;
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+/* ---------- Success message (green, for logout/reg confirmation) ---------- */
+.success {
+    background: #dcfce7;
+    color: #15803d;
+    padding: 12px 18px;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    margin-bottom: 22px;
+    border-left: 5px solid #15803d;
+    font-weight: 500;
+    animation: fadeInUp 0.4s ease;
+}
+
+/* ---------- Error message (red, for login failures) ---------- */
+.error {
+    background: #fee2e2;
+    color: #b91c1c;
+    padding: 12px 18px;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    margin-bottom: 22px;
+    border-left: 5px solid #b91c1c;
+    font-weight: 500;
+    animation: shake 0.4s ease;
+}
+
+/* ---------- Login button: gradient, rounded, with hover effect ---------- */
+.login-form button {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(90deg, #2a5298, #6b4e9e);
+    color: white;
+    border: none;
+    border-radius: 40px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    letter-spacing: 0.8px;
+    box-shadow: 0 6px 14px rgba(43, 82, 152, 0.3);
+}
+
+.login-form button:hover {
+    background: linear-gradient(90deg, #1e3c72, #5a3e85);
+    transform: scale(1.02);
+    box-shadow: 0 10px 20px rgba(43, 82, 152, 0.4);
+}
+
+.login-form button:active {
+    transform: scale(0.98);
+}
+
+/* ---------- Link to registration page ---------- */
+.link {
+    text-align: center;
+    margin-top: 28px;
+    color: #475569;
+    font-size: 0.95rem;
+}
+
+.link a {
+    color: #2a5298;
+    text-decoration: none;
+    font-weight: 700;
+    transition: all 0.2s;
+}
+
+.link a:hover {
+    color: #6b4e9e;
+    text-decoration: underline;
+}
+
+/* ---------- Keyframe animations ---------- */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+}
+
+/* ---------- Responsive: tablets and mobile ---------- */
+@media (max-width: 550px) {
+    .login-page {
+        max-width: 100%;
+    }
+    .login-form {
+        padding: 30px 22px;
+    }
+    .login-header h1 {
+        font-size: 1.6rem;
+    }
+    .login-header img {
+        width: 60px;
+        height: 60px;
+    }
+    .login-form h2 {
+        font-size: 1.5rem;
+    }
+    .login-form button {
+        font-size: 1rem;
+        padding: 12px;
+    }
+}
+
+@media (max-width: 400px) {
+    .login-form {
+        padding: 25px 18px;
+    }
+    .login-form input[type="email"],
+    .login-form input[type="password"] {
+        padding: 12px 14px;
+        margin-bottom: 16px;
+    }
+}
