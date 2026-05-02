@@ -5,18 +5,18 @@
 
 <jsp:include page="/WEB-INF/templates/head.jsp">
   <jsp:param name="title" value="Sugandha Sansaar — Register" />
-  <jsp:param name="cssFile" value="auth" />
+  <jsp:param name="cssFile" value="register" />
 </jsp:include>
 
 <body>
-<div class="auth-page">
+<div class="register-page">
 
-  <div class="auth-header">
+  <div class="register-header">
     <img src="${pageContext.request.contextPath}/static/images/logo.png" alt="Sugandha Sansaar" />
     <h1>Sugandha Sansaar</h1>
   </div>
 
-  <div class="auth-form">
+  <div class="register-form">
     <form action="${pageContext.request.contextPath}/register" method="post">
       <h2>Create Account</h2>
 

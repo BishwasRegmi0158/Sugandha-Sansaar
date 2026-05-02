@@ -3,11 +3,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
                              https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
-         version="6.0">
+         version="6.0"
+         metadata-complete="false">
 
-    <!-- Welcome file — redirects root URL to the topic servlet -->
+    <!-- Welcome file (optional; remove or adjust) -->
     <welcome-file-list>
-        <welcome-file>topic</welcome-file>
+        <welcome-file>register</welcome-file>
     </welcome-file-list>
 
     <!-- Custom 404 error page -->
