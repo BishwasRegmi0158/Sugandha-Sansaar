@@ -68,3 +68,25 @@ CREATE TABLE sessions (
                               ON UPDATE CASCADE
                               ON DELETE CASCADE
 );
+
+-- 6. Categories table
+CREATE TABLE IF NOT EXISTS categories (
+                                          id          INT PRIMARY KEY AUTO_INCREMENT,
+                                          name        VARCHAR(100) NOT NULL UNIQUE,
+                                          description TEXT
+);
+
+-- 7. Perfumes table (matches your DAO exactly)
+CREATE TABLE IF NOT EXISTS perfumes (
+                                        id          INT PRIMARY KEY AUTO_INCREMENT,
+                                        name        VARCHAR(150)    NOT NULL,
+                                        brand       VARCHAR(100)    NOT NULL,
+                                        category    VARCHAR(100)    NOT NULL,
+                                        description TEXT,
+                                        price       DOUBLE          NOT NULL,
+                                        stock       INT             NOT NULL DEFAULT 0,
+                                        image_url   VARCHAR(500),
+                                        volume      DOUBLE,
+                                        gender      VARCHAR(20),
+                                        active      TINYINT(1)      NOT NULL DEFAULT 1
+);
