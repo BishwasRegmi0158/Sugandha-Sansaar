@@ -12,7 +12,8 @@
 <div class="register-page">
 
   <div class="register-header">
-    <img src="${pageContext.request.contextPath}/static/images/logo.png" alt="Sugandha Sansaar" />
+    <img src="${pageContext.request.contextPath}/static/images/logo.png"
+         alt="Sugandha Sansaar" />
     <h1>Sugandha Sansaar</h1>
   </div>
 
@@ -20,21 +21,42 @@
     <form action="${pageContext.request.contextPath}/register" method="post">
       <h2>Create Account</h2>
 
+      <%-- Display error message if present --%>
       <c:if test="${not empty error}">
         <p class="error"><c:out value="${error}" /></p>
       </c:if>
 
-      <input type="text" name="fullName" placeholder="Full Name"
-             value="<c:out value='${param.fullName}' default='' />" required />
+      <%-- Full name input — value preserved on validation failure --%>
+      <input type="text"
+             name="fullName"
+             placeholder="Full Name"
+             value="<c:out value='${param.fullName}' default='' />"
+             required />
 
-      <input type="email" name="email" placeholder="Email"
-             value="<c:out value='${param.email}' default='' />" required />
+      <%-- Email input — value preserved on validation failure --%>
+      <input type="email"
+             name="email"
+             placeholder="Email"
+             value="<c:out value='${param.email}' default='' />"
+             required />
 
-      <input type="tel" name="phone" placeholder="Phone Number"
-             value="<c:out value='${param.phone}' default='' />" required />
+      <%-- Phone input — value preserved on validation failure --%>
+      <input type="tel"
+             name="phone"
+             placeholder="Phone Number"
+             value="<c:out value='${param.phone}' default='' />"
+             required />
 
-      <input type="password" name="password" placeholder="Password" required />
-      <input type="password" name="confirmPassword" placeholder="Confirm Password" required />
+      <%-- Password fields — never preserved for security --%>
+      <input type="password"
+             name="password"
+             placeholder="Password"
+             required />
+
+      <input type="password"
+             name="confirmPassword"
+             placeholder="Confirm Password"
+             required />
 
       <button type="submit">Register</button>
 

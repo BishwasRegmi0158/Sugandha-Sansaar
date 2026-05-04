@@ -32,29 +32,40 @@ public class RegisterServlet extends HttpServlet {
                           HttpServletResponse response)
             throws ServletException, IOException {
 
-        String fullName = request.getParameter("fullName");
-        String email = request.getParameter("email");
-        String phone = request.getParameter("phone");
-        String password = request.getParameter("password");
+        String fullName        = request.getParameter("fullName");
+        String email           = request.getParameter("email");
+        String phone           = request.getParameter("phone");
+        String password        = request.getParameter("password");
         String confirmPassword = request.getParameter("confirmPassword");
 
         StringBuilder errors = new StringBuilder();
 
-        // Validation
+        // Validate full name
         if (ValidationUtil.isNullOrEmpty(fullName) || fullName.trim().length() < 3) {
             errors.append("Full name must be at least 3 characters. ");
         }
+
+        // Validate email
         if (!ValidationUtil.isValidEmail(email)) {
             errors.append("Invalid email format. ");
         }
 
+        // Validate phone
+        if (!ValidationUtil.isValidPhone(phone)) {
+            errors.append("Please enter a valid NTC or Ncell number. ");
+        }
+
+        // Validate password
         if (!ValidationUtil.isValidPassword(password)) {
             errors.append("Password must be 8+ characters with uppercase, number, and symbol. ");
         }
+
+        // Validate confirm password
         if (!ValidationUtil.doPasswordsMatch(password, confirmPassword)) {
             errors.append("Passwords do not match. ");
         }
 
+        // Return errors if any
         if (!errors.isEmpty()) {
             request.setAttribute("error", errors.toString().trim());
             request.getRequestDispatcher("/WEB-INF/views/register.jsp")
@@ -62,13 +73,15 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
 
-        // Check if email or phone already exists
+        // Check duplicate email
         if (userDao.findUserByEmail(email) != null) {
             request.setAttribute("error", "Email already registered.");
             request.getRequestDispatcher("/WEB-INF/views/register.jsp")
                     .forward(request, response);
             return;
         }
+
+        // Check duplicate phone
         if (userDao.findUserByPhone(phone) != null) {
             request.setAttribute("error", "Phone number already registered.");
             request.getRequestDispatcher("/WEB-INF/views/register.jsp")
@@ -79,8 +92,9 @@ public class RegisterServlet extends HttpServlet {
         // Hash password
         String hashedPassword = PasswordUtil.getHashPassword(password);
 
-        // Create user: role_id = 2 (normal user), is_active = 0 (pending admin approval)
-        User user = new User(2, fullName, email, phone, hashedPassword, null, 0);
+        // role_id = 2 (user)
+        // is_active = 1 — auto approved, no admin approval needed
+        User user = new User(2, fullName, email, phone, hashedPassword, null, 1);
 
         boolean success = userDao.insertUser(user);
 
@@ -91,7 +105,7 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
 
-        // Redirect to log in with success message (optional)
+        // Redirect to login with success message
         response.sendRedirect(request.getContextPath() + "/login?registered=true");
     }
 }
