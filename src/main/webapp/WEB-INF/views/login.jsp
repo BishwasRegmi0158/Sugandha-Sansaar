@@ -1,5 +1,7 @@
 <%--
   Login page for Sugandha Sansaar.
+  Allows users to enter email and password.
+  Displays error or success messages based on query parameters.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
