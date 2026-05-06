@@ -18,7 +18,7 @@ VALUES (
            'Bishwash Regmi',
            'bishwash@sugandha.com',
            '9860573543',
-           '$2a$12$2vxBqpTNBHDyHPLVnsFNJOX7rBqtgKnFfucORUHDoKfGBmHq2OJ1O',
+           'Admin@1234',
            NULL,
            1
        );
