@@ -5,28 +5,24 @@
 
 <jsp:include page="/WEB-INF/templates/head.jsp">
     <jsp:param name="title" value="Sugandha Sansaar — Our Collection" />
-    <jsp:param name="cssFile" value="products" />
+    <jsp:param name="cssFile" value="product" />
 </jsp:include>
 
 <body>
 <div class="products-page">
 
-    <!-- ===== HEADER ===== -->
     <header class="products-header">
         <div class="header-inner">
             <div class="logo">
-                <a href="${pageContext.request.contextPath}/products">
-                    🌸 Sugandha Sansaar
-                </a>
+                <a href="${pageContext.request.contextPath}/products">🌸 Sugandha Sansaar</a>
             </div>
             <nav>
                 <a href="${pageContext.request.contextPath}/products" class="nav-link active">Collection</a>
-                <a href="${pageContext.request.contextPath}/login" class="nav-link">Login</a>
+                <a href="${pageContext.request.contextPath}/login"    class="nav-link">Login</a>
             </nav>
         </div>
     </header>
 
-    <!-- ===== HERO ===== -->
     <section class="hero">
         <h1>Discover Your Scent</h1>
         <p>Premium fragrances crafted for every occasion</p>
@@ -34,120 +30,93 @@
 
     <main class="products-main">
 
-        <!-- Error message -->
         <c:if test="${param.error == 'notfound'}">
             <div class="alert-error">Product not found. Browse our collection below.</div>
         </c:if>
 
-        <!-- ===== SEARCH BAR ===== -->
+        <!-- SEARCH -->
         <form action="${pageContext.request.contextPath}/products" method="GET" class="search-form">
-            <input
-                    type="text"
-                    name="search"
-                    class="search-input"
-                    placeholder="Search by name, brand..."
-                    value="${not empty searchKeyword ? searchKeyword : ''}"
-            />
+            <input type="text" name="search" class="search-input"
+                   placeholder="Search by name, brand..."
+                   value="${not empty searchKeyword ? searchKeyword : ''}"/>
             <button type="submit" class="search-btn">Search</button>
             <c:if test="${not empty searchKeyword}">
                 <a href="${pageContext.request.contextPath}/products" class="clear-btn">✕ Clear</a>
             </c:if>
         </form>
 
-        <!-- ===== FILTERS ===== -->
+        <!-- FILTERS -->
         <div class="filters">
             <div class="filter-row">
-                <span class="filter-label">Fragrance:</span>
+                <span class="filter-label">Category:</span>
                 <a href="${pageContext.request.contextPath}/products"
-                   class="filter-btn ${empty familyFilter && empty genderFilter && empty searchKeyword ? 'active' : ''}">All</a>
-                <a href="${pageContext.request.contextPath}/products?family=Floral"
-                   class="filter-btn ${familyFilter == 'Floral' ? 'active' : ''}">🌸 Floral</a>
-                <a href="${pageContext.request.contextPath}/products?family=Woody"
-                   class="filter-btn ${familyFilter == 'Woody' ? 'active' : ''}">🌲 Woody</a>
-                <a href="${pageContext.request.contextPath}/products?family=Oriental"
-                   class="filter-btn ${familyFilter == 'Oriental' ? 'active' : ''}">✨ Oriental</a>
-                <a href="${pageContext.request.contextPath}/products?family=Fresh"
-                   class="filter-btn ${familyFilter == 'Fresh' ? 'active' : ''}">🌊 Fresh</a>
-                <a href="${pageContext.request.contextPath}/products?family=Citrus"
-                   class="filter-btn ${familyFilter == 'Citrus' ? 'active' : ''}">🍋 Citrus</a>
+                   class="filter-btn ${empty categoryFilter ? 'active' : ''}">All</a>
+                <c:forEach var="cat" items="${categories}">
+                    <a href="${pageContext.request.contextPath}/products?category=${cat.id}"
+                       class="filter-btn ${categoryFilter == cat.id ? 'active' : ''}">${cat.name}</a>
+                </c:forEach>
             </div>
             <div class="filter-row">
                 <span class="filter-label">Gender:</span>
-                <a href="${pageContext.request.contextPath}/products?gender=Men"
-                   class="filter-btn ${genderFilter == 'Men' ? 'active' : ''}">Men</a>
-                <a href="${pageContext.request.contextPath}/products?gender=Women"
-                   class="filter-btn ${genderFilter == 'Women' ? 'active' : ''}">Women</a>
-                <a href="${pageContext.request.contextPath}/products?gender=Unisex"
-                   class="filter-btn ${genderFilter == 'Unisex' ? 'active' : ''}">Unisex</a>
+                <a href="${pageContext.request.contextPath}/products"
+                   class="filter-btn ${empty genderFilter ? 'active' : ''}">All</a>
+                <a href="${pageContext.request.contextPath}/products?gender=male"
+                   class="filter-btn ${'male' == genderFilter ? 'active' : ''}">Male</a>
+                <a href="${pageContext.request.contextPath}/products?gender=female"
+                   class="filter-btn ${'female' == genderFilter ? 'active' : ''}">Female</a>
             </div>
         </div>
 
-        <!-- Results count -->
-        <p class="results-count">
-            <c:choose>
-                <c:when test="${not empty searchKeyword}">Showing ${products.size()} result(s) for "<strong>${searchKeyword}</strong>"</c:when>
-                <c:when test="${not empty familyFilter}">Showing <strong>${products.size()}</strong> ${familyFilter} fragrances</c:when>
-                <c:when test="${not empty genderFilter}">Showing <strong>${products.size()}</strong> fragrances for ${genderFilter}</c:when>
-                <c:otherwise>Showing all <strong>${products.size()}</strong> fragrances</c:otherwise>
-            </c:choose>
-        </p>
-
-        <!-- ===== PRODUCT GRID ===== -->
+        <!-- PRODUCT GRID -->
         <c:choose>
             <c:when test="${empty products}">
-                <div class="empty-state">
-                    <div class="empty-icon">💨</div>
-                    <h2>No products found</h2>
-                    <a href="${pageContext.request.contextPath}/products" class="btn-primary">View All</a>
+                <div class="no-results">
+                    <p>No perfumes found. <a href="${pageContext.request.contextPath}/products">View all</a></p>
                 </div>
             </c:when>
             <c:otherwise>
-                <div class="product-grid">
+                <p class="results-count">${products.size()} product(s) found</p>
+                <div class="products-grid">
                     <c:forEach var="p" items="${products}">
-                        <div class="product-card ${not p.inStock ? 'oos' : ''}">
-                            <div class="card-image">
-                                <c:choose>
-                                    <c:when test="${not empty p.imageUrl}">
-                                        <img src="${pageContext.request.contextPath}/static/images/${p.imageUrl}"
-                                             alt="${p.productName}"
-                                             onerror="this.parentElement.innerHTML='<div class=\'img-placeholder\'>🌸</div>'" />
-                                    </c:when>
-                                    <c:otherwise>
-                                        <div class="img-placeholder">🌸</div>
-                                    </c:otherwise>
-                                </c:choose>
-                                <span class="badge-family">${p.fragranceFamily}</span>
-                                <c:if test="${not p.inStock}">
-                                    <span class="badge-oos">Out of Stock</span>
-                                </c:if>
-                            </div>
-                            <div class="card-body">
-                                <p class="card-brand">${p.brand}</p>
-                                <h3 class="card-name">${p.productName}</h3>
-                                <div class="card-tags">
-                                    <span>${p.gender}</span>
-                                    <span>${p.scentStrength}</span>
-                                    <span>${p.sizeMl}ml</span>
+                        <a href="${pageContext.request.contextPath}/product-detail?id=${p.id}" class="product-card-link">
+                            <div class="product-card">
+                                <div class="product-img-wrap">
+                                    <c:choose>
+                                        <c:when test="${not empty p.imageUrl}">
+                                            <img src="${pageContext.request.contextPath}/static/images/${p.imageUrl}"
+                                                 alt="${p.name}"
+                                                 onerror="this.parentElement.innerHTML='<div class=\'img-placeholder\'>🌸</div>'"/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="img-placeholder">🌸</div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <c:if test="${p.stock == 0}">
+                                        <div class="oos-badge">Out of Stock</div>
+                                    </c:if>
                                 </div>
-                                <div class="card-footer">
-                                    <span class="card-price">${p.formattedPrice}</span>
-                                    <a href="${pageContext.request.contextPath}/product-detail?id=${p.productId}"
-                                       class="btn-view">View Details</a>
+                                <div class="product-info">
+                                    <p class="product-brand">${p.brand}</p>
+                                    <h3 class="product-name">${p.name}</h3>
+                                    <p class="product-meta">${p.categoryName} · ${p.volume}ml · ${p.gender}</p>
+                                    <p class="product-price">NPR ${p.price}</p>
+                                    <c:choose>
+                                        <c:when test="${p.stock > 0}">
+                                            <span class="stock-badge in-stock">In Stock</span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span class="stock-badge out-of-stock">Out of Stock</span>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </c:forEach>
                 </div>
             </c:otherwise>
         </c:choose>
 
     </main>
-
-    <!-- ===== FOOTER ===== -->
-    <footer class="products-footer">
-        <p>© 2024 Sugandha Sansaar — Your Premium Fragrance Destination</p>
-    </footer>
-
 </div>
 </body>
 </html>

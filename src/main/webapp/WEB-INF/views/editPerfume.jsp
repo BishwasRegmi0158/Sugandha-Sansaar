@@ -17,10 +17,10 @@
             <span class="logo-text">Essence Admin</span>
         </div>
         <nav class="sidebar-nav">
-            <a href="${pageContext.request.contextPath}/admin/dashboard" class="nav-link">📊 Dashboard</a>
-            <a href="${pageContext.request.contextPath}/admin/perfumes" class="nav-link active">🧴 Manage Perfumes</a>
+            <a href="${pageContext.request.contextPath}/admin/dashboard"          class="nav-link">📊 Dashboard</a>
+            <a href="${pageContext.request.contextPath}/admin/perfumes"           class="nav-link active">🧴 Manage Perfumes</a>
             <a href="${pageContext.request.contextPath}/admin/perfumes?action=add" class="nav-link">➕ Add Perfume</a>
-            <a href="${pageContext.request.contextPath}/logout" class="nav-link nav-logout">🚪 Logout</a>
+            <a href="${pageContext.request.contextPath}/logout"                   class="nav-link nav-logout">🚪 Logout</a>
         </nav>
     </aside>
 
@@ -45,7 +45,7 @@
                     <div class="form-group">
                         <label for="name">Perfume Name <span class="required">*</span></label>
                         <input type="text" id="name" name="name" value="${perfume.name}"
-                               required maxlength="100">
+                               required maxlength="150">
                     </div>
 
                     <div class="form-group">
@@ -59,28 +59,32 @@
                         </datalist>
                     </div>
 
+                    <%-- Category — FK <select> using categories table --%>
                     <div class="form-group">
-                        <label for="category">Category <span class="required">*</span></label>
-                        <input type="text" id="category" name="category" value="${perfume.category}"
-                               required maxlength="50" list="categorySuggestions">
-                        <datalist id="categorySuggestions">
+                        <label for="categoryId">Category <span class="required">*</span></label>
+                        <select id="categoryId" name="categoryId" required>
+                            <option value="">-- Select Category --</option>
                             <c:forEach var="cat" items="${categories}">
-                                <option value="${cat}"/>
+                                <option value="${cat.id}"
+                                    ${perfume.categoryId == cat.id ? 'selected' : ''}>
+                                        ${cat.name}
+                                </option>
                             </c:forEach>
-                        </datalist>
+                        </select>
                     </div>
 
+                    <%-- Gender — ENUM: male / female --%>
                     <div class="form-group">
                         <label for="gender">Gender <span class="required">*</span></label>
                         <select id="gender" name="gender" required>
-                            <option value="Male"   ${perfume.gender == 'Male'   ? 'selected' : ''}>Male</option>
-                            <option value="Female" ${perfume.gender == 'Female' ? 'selected' : ''}>Female</option>
-                            <option value="Unisex" ${perfume.gender == 'Unisex' ? 'selected' : ''}>Unisex</option>
+                            <option value="">-- Select --</option>
+                            <option value="male"   ${'male'   == perfume.gender ? 'selected' : ''}>Male</option>
+                            <option value="female" ${'female' == perfume.gender ? 'selected' : ''}>Female</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="price">Price ($) <span class="required">*</span></label>
+                        <label for="price">Price (NPR) <span class="required">*</span></label>
                         <input type="number" id="price" name="price" step="0.01" min="0.01"
                                value="${perfume.price}" required>
                     </div>
@@ -132,15 +136,19 @@
     function validateForm() {
         const name   = document.getElementById('name').value.trim();
         const brand  = document.getElementById('brand').value.trim();
+        const catId  = document.getElementById('categoryId').value;
+        const gender = document.getElementById('gender').value;
         const price  = parseFloat(document.getElementById('price').value);
         const stock  = parseInt(document.getElementById('stock').value);
         const volume = parseFloat(document.getElementById('volume').value);
 
-        if (!name)        { alert('Perfume name is required.'); return false; }
-        if (!brand)       { alert('Brand is required.'); return false; }
-        if (isNaN(price)  || price <= 0)  { alert('Please enter a valid price.'); return false; }
-        if (isNaN(stock)  || stock < 0)   { alert('Stock must be 0 or more.'); return false; }
-        if (isNaN(volume) || volume <= 0) { alert('Please enter a valid volume.'); return false; }
+        if (!name)                       { alert('Perfume name is required.'); return false; }
+        if (!brand)                      { alert('Brand is required.'); return false; }
+        if (!catId)                      { alert('Please select a category.'); return false; }
+        if (!gender)                     { alert('Please select a gender.'); return false; }
+        if (isNaN(price)  || price <= 0) { alert('Please enter a valid price.'); return false; }
+        if (isNaN(stock)  || stock < 0)  { alert('Stock must be 0 or more.'); return false; }
+        if (isNaN(volume) || volume <= 0){ alert('Please enter a valid volume.'); return false; }
         return true;
     }
 </script>

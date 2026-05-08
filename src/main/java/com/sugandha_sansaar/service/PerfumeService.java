@@ -1,147 +1,68 @@
-package com.sugandha_sansaar.service;
-
-
-
-import com.sugandha_sansaar.dao.PerfumeDAO;
-import com.sugandha_sansaar.model.Perfume;
-import com.sugandha_sansaar.utils.ValidationUtil;
-import com.sugandha_sansaar.utils.productValidation;
-
-import java.sql.SQLException;
-import java.util.List;
+package com.sugandha_sansaar.model;
 
 /**
- * Service layer for Perfume-related business logic.
- * Acts as the bridge between AdminController and PerfumeDAO.
- * Handles validation before passing data to the DAO.
+ * Model class representing a Perfume product.
+ * Aligned to the 'products' table in sugandha_sansaar schema.
  *
- * @author Member 4 - Admin Dashboard
+ * SQL columns: id, category_id, name, brand, description,
+ *              price (DECIMAL), stock, image_url, volume (DECIMAL),
+ *              gender (ENUM: male/female), active
  */
-public class PerfumeService{
+public class Perfume {
 
-    private final PerfumeDAO perfumeDAO;
+    private int     id;
+    private int     categoryId;       // FK → categories.id
+    private String  categoryName;     // joined from categories (not a DB column)
+    private String  name;
+    private String  brand;
+    private String  description;
+    private double  price;
+    private int     stock;
+    private String  imageUrl;
+    private double  volume;           // ml
+    private String  gender;           // "male" | "female"
+    private boolean active;
 
-    public PerfumeService() {
-        this.perfumeDAO = new PerfumeDAO();
+    public Perfume() {}
+
+    public Perfume(int id, int categoryId, String name, String brand,
+                   String description, double price, int stock,
+                   String imageUrl, double volume, String gender, boolean active) {
+        this.id = id; this.categoryId = categoryId; this.name = name;
+        this.brand = brand; this.description = description; this.price = price;
+        this.stock = stock; this.imageUrl = imageUrl; this.volume = volume;
+        this.gender = gender; this.active = active;
     }
 
-    // ─── ADD ─────────────────────────────────────────────────────────────────────
+    public int     getId()           { return id; }
+    public int     getCategoryId()   { return categoryId; }
+    public String  getCategoryName() { return categoryName; }
+    public String  getName()         { return name; }
+    public String  getBrand()        { return brand; }
+    public String  getDescription()  { return description; }
+    public double  getPrice()        { return price; }
+    public int     getStock()        { return stock; }
+    public String  getImageUrl()     { return imageUrl; }
+    public double  getVolume()       { return volume; }
+    public String  getGender()       { return gender; }
+    public boolean isActive()        { return active; }
 
-    /**
-     * Validates and adds a new perfume.
-     *
-     * @param perfume the Perfume to add
-     * @return null on success, or an error message string on failure
-     */
-    public String addPerfume(Perfume perfume) {
-        // Business-level validation
-        String validationError = productValidation.validatePerfumeForm(
-                perfume.getName(), perfume.getBrand(), perfume.getCategory(),
-                String.valueOf(perfume.getPrice()), String.valueOf(perfume.getStock()),
-                String.valueOf(perfume.getVolume()), perfume.getGender()
-        );
-        if (validationError != null) return validationError;
+    public void setId(int id)                 { this.id = id; }
+    public void setCategoryId(int categoryId) { this.categoryId = categoryId; }
+    public void setCategoryName(String n)     { this.categoryName = n; }
+    public void setName(String name)          { this.name = name; }
+    public void setBrand(String brand)        { this.brand = brand; }
+    public void setDescription(String d)      { this.description = d; }
+    public void setPrice(double price)        { this.price = price; }
+    public void setStock(int stock)           { this.stock = stock; }
+    public void setImageUrl(String imageUrl)  { this.imageUrl = imageUrl; }
+    public void setVolume(double volume)      { this.volume = volume; }
+    public void setGender(String gender)      { this.gender = gender; }
+    public void setActive(boolean active)     { this.active = active; }
 
-        try {
-            boolean success = perfumeDAO.addPerfume(perfume);
-            return success ? null : "Failed to add perfume. Please try again.";
-        } catch (SQLException e) {
-            System.err.println("PerfumeService.addPerfume error: " + e.getMessage());
-            return "Database error while adding perfume.";
-        }
+    @Override
+    public String toString() {
+        return "Perfume{id=" + id + ", name='" + name + "', brand='" + brand +
+                "', price=" + price + ", stock=" + stock + "}";
     }
-
-    // ─── FETCH ALL ────────────────────────────────────────────────────────────────
-
-    /**
-     * Returns all perfumes (for admin – includes inactive).
-     */
-    public List<Perfume> getAllPerfumes() throws SQLException {
-        return perfumeDAO.getAllPerfumes();
-    }
-
-    // ─── FETCH ONE ────────────────────────────────────────────────────────────────
-
-    /**
-     * Returns a single perfume by ID, or null if not found.
-     */
-    public Perfume getPerfumeById(int id) throws SQLException {
-        return perfumeDAO.getPerfumeById(id);
-    }
-
-    // ─── UPDATE ──────────────────────────────────────────────────────────────────
-
-    /**
-     * Validates and updates an existing perfume.
-     *
-     * @param perfume the Perfume with updated fields
-     * @return null on success, or an error message string on failure
-     */
-    public String updatePerfume(Perfume perfume) {
-        String validationError = productValidation.validatePerfumeForm(
-                perfume.getName(), perfume.getBrand(), perfume.getCategory(),
-                String.valueOf(perfume.getPrice()), String.valueOf(perfume.getStock()),
-                String.valueOf(perfume.getVolume()), perfume.getGender()
-        );
-        if (validationError != null) return validationError;
-
-        try {
-            boolean success = perfumeDAO.updatePerfume(perfume);
-            return success ? null : "Failed to update perfume. It may no longer exist.";
-        } catch (SQLException e) {
-            System.err.println("PerfumeService.updatePerfume error: " + e.getMessage());
-            return "Database error while updating perfume.";
-        }
-    }
-
-    // ─── UPDATE STOCK ─────────────────────────────────────────────────────────────
-
-    /**
-     * Updates only the stock quantity for a given perfume.
-     *
-     * @param perfumeId the target perfume's ID
-     * @param newStock  the new stock value (must be >= 0)
-     * @return null on success, or an error message string on failure
-     */
-    public String updateStock(int perfumeId, int newStock) {
-        if (newStock < 0) return "Stock cannot be negative.";
-
-        try {
-            boolean success = perfumeDAO.updateStock(perfumeId, newStock);
-            return success ? null : "Failed to update stock.";
-        } catch (SQLException e) {
-            System.err.println("PerfumeService.updateStock error: " + e.getMessage());
-            return "Database error while updating stock.";
-        }
-    }
-
-    // ─── DELETE ──────────────────────────────────────────────────────────────────
-
-    /**
-     * Deletes a perfume by ID.
-     *
-     * @param id the perfume's primary key
-     * @return null on success, or an error message string on failure
-     */
-    public String deletePerfume(int id) {
-        try {
-            boolean success = perfumeDAO.deletePerfume(id);
-            return success ? null : "Perfume not found or already deleted.";
-        } catch (SQLException e) {
-            System.err.println("PerfumeService.deletePerfume error: " + e.getMessage());
-            return "Database error while deleting perfume.";
-        }
-    }
-
-    // ─── DASHBOARD STATS ──────────────────────────────────────────────────────────
-
-    public int getTotalPerfumes() throws SQLException  { return perfumeDAO.getTotalPerfumes(); }
-    public int getOutOfStockCount() throws SQLException { return perfumeDAO.getOutOfStockCount(); }
-    public int getLowStockCount() throws SQLException   { return perfumeDAO.getLowStockCount(); }
-    public int getTotalBrands() throws SQLException     { return perfumeDAO.getTotalBrands(); }
-
-    // ─── CATEGORY / BRAND HELPERS ─────────────────────────────────────────────────
-
-    public List<String> getAllCategories() throws SQLException { return perfumeDAO.getAllCategories(); }
-    public List<String> getAllBrands() throws SQLException     { return perfumeDAO.getAllBrands(); }
 }

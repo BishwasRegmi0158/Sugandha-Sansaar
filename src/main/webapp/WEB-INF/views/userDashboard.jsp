@@ -5,7 +5,7 @@
 
 <jsp:include page="/WEB-INF/templates/head.jsp">
     <jsp:param name="title" value="Sugandha Sansaar — My Dashboard" />
-    <jsp:param name="cssFile" value="userDashboard" />
+    <jsp:param name="cssFile" value="user-dashboard" />
 </jsp:include>
 
 <body>

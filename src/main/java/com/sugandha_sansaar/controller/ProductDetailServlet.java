@@ -1,7 +1,7 @@
 package com.sugandha_sansaar.controller;
 
 import com.sugandha_sansaar.dao.ProductDao;
-import com.sugandha_sansaar.model.Product;
+import com.sugandha_sansaar.model.Perfume;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -9,11 +9,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Handles the single product detail page.
+ * Public-facing product detail page.
  * URL: /product-detail?id=5
+ * Aligned to new SQL schema — uses Perfume model, related by category_id.
  */
 @WebServlet("/product-detail")
 public class ProductDetailServlet extends HttpServlet {
@@ -30,8 +32,6 @@ public class ProductDetailServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String idParam = req.getParameter("id");
-
-        // Validate id parameter
         if (idParam == null || idParam.trim().isEmpty()) {
             res.sendRedirect(req.getContextPath() + "/products");
             return;
@@ -45,19 +45,24 @@ public class ProductDetailServlet extends HttpServlet {
             return;
         }
 
-        // Load product
-        Product product = productDao.getProductById(productId);
-        if (product == null) {
-            res.sendRedirect(req.getContextPath() + "/products?error=notfound");
-            return;
+        try {
+            Perfume product = productDao.getProductById(productId);
+            if (product == null) {
+                res.sendRedirect(req.getContextPath() + "/products?error=notfound");
+                return;
+            }
+
+            // 4 related perfumes from the same category
+            List<Perfume> related = productDao.getRelatedProducts(
+                    product.getCategoryId(), product.getId(), 4);
+
+            req.setAttribute("product", product);
+            req.setAttribute("relatedProducts", related);
+            req.getRequestDispatcher("/WEB-INF/views/product-detail.jsp").forward(req, res);
+
+        } catch (SQLException e) {
+            req.setAttribute("errorMessage", "Could not load product: " + e.getMessage());
+            req.getRequestDispatcher("/WEB-INF/views/product-detail.jsp").forward(req, res);
         }
-
-        // Load 4 related products (same family)
-        List<Product> related = productDao.getRelatedProducts(
-                product.getFragranceFamily(), product.getProductId(), 4);
-
-        req.setAttribute("product", product);
-        req.setAttribute("relatedProducts", related);
-        req.getRequestDispatcher("/WEB-INF/views/product-detail.jsp").forward(req, res);
     }
 }

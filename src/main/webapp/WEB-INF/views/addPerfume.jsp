@@ -17,10 +17,10 @@
             <span class="logo-text">Essence Admin</span>
         </div>
         <nav class="sidebar-nav">
-            <a href="${pageContext.request.contextPath}/admin/dashboard" class="nav-link">📊 Dashboard</a>
-            <a href="${pageContext.request.contextPath}/admin/perfumes" class="nav-link">🧴 Manage Perfumes</a>
+            <a href="${pageContext.request.contextPath}/admin/dashboard"          class="nav-link">📊 Dashboard</a>
+            <a href="${pageContext.request.contextPath}/admin/perfumes"           class="nav-link">🧴 Manage Perfumes</a>
             <a href="${pageContext.request.contextPath}/admin/perfumes?action=add" class="nav-link active">➕ Add Perfume</a>
-            <a href="${pageContext.request.contextPath}/logout" class="nav-link nav-logout">🚪 Logout</a>
+            <a href="${pageContext.request.contextPath}/logout"                   class="nav-link nav-logout">🚪 Logout</a>
         </nav>
     </aside>
 
@@ -46,7 +46,7 @@
                         <label for="name">Perfume Name <span class="required">*</span></label>
                         <input type="text" id="name" name="name"
                                value="${not empty perfume ? perfume.name : ''}"
-                               placeholder="e.g. Midnight Rose" required maxlength="100">
+                               placeholder="e.g. Midnight Rose" required maxlength="150">
                     </div>
 
                     <%-- Brand --%>
@@ -63,40 +63,33 @@
                         </datalist>
                     </div>
 
-                    <%-- Category --%>
+                    <%-- Category — FK dropdown using categories table --%>
                     <div class="form-group">
-                        <label for="category">Category <span class="required">*</span></label>
-                        <input type="text" id="category" name="category"
-                               value="${not empty perfume ? perfume.category : ''}"
-                               placeholder="e.g. Floral" required maxlength="50"
-                               list="categorySuggestions">
-                        <datalist id="categorySuggestions">
-                            <c:forEach var="c" items="${categories}">
-                                <option value="${c}"/>
+                        <label for="categoryId">Category <span class="required">*</span></label>
+                        <select id="categoryId" name="categoryId" required>
+                            <option value="">-- Select Category --</option>
+                            <c:forEach var="cat" items="${categories}">
+                                <option value="${cat.id}"
+                                    ${not empty perfume && perfume.categoryId == cat.id ? 'selected' : ''}>
+                                        ${cat.name}
+                                </option>
                             </c:forEach>
-                            <option value="Floral"/>
-                            <option value="Woody"/>
-                            <option value="Oriental"/>
-                            <option value="Fresh"/>
-                            <option value="Aquatic"/>
-                            <option value="Citrus"/>
-                        </datalist>
+                        </select>
                     </div>
 
-                    <%-- Gender --%>
+                    <%-- Gender — ENUM: male / female --%>
                     <div class="form-group">
                         <label for="gender">Gender <span class="required">*</span></label>
                         <select id="gender" name="gender" required>
                             <option value="">-- Select --</option>
-                            <option value="Male"   ${perfume.gender == 'Male'   ? 'selected' : ''}>Male</option>
-                            <option value="Female" ${perfume.gender == 'Female' ? 'selected' : ''}>Female</option>
-                            <option value="Unisex" ${perfume.gender == 'Unisex' ? 'selected' : ''}>Unisex</option>
+                            <option value="male"   ${not empty perfume && 'male'   == perfume.gender ? 'selected' : ''}>Male</option>
+                            <option value="female" ${not empty perfume && 'female' == perfume.gender ? 'selected' : ''}>Female</option>
                         </select>
                     </div>
 
                     <%-- Price --%>
                     <div class="form-group">
-                        <label for="price">Price ($) <span class="required">*</span></label>
+                        <label for="price">Price (NPR) <span class="required">*</span></label>
                         <input type="number" id="price" name="price" step="0.01" min="0.01"
                                value="${not empty perfume ? perfume.price : ''}"
                                placeholder="0.00" required>
@@ -156,22 +149,22 @@
 </div>
 
 <script>
-    /**
-     * Client-side validation before form submission.
-     * Server-side validation also runs in ValidationUtil.java.
-     */
     function validateForm() {
-        const name   = document.getElementById('name').value.trim();
-        const brand  = document.getElementById('brand').value.trim();
-        const price  = parseFloat(document.getElementById('price').value);
-        const stock  = parseInt(document.getElementById('stock').value);
-        const volume = parseFloat(document.getElementById('volume').value);
+        const name     = document.getElementById('name').value.trim();
+        const brand    = document.getElementById('brand').value.trim();
+        const catId    = document.getElementById('categoryId').value;
+        const gender   = document.getElementById('gender').value;
+        const price    = parseFloat(document.getElementById('price').value);
+        const stock    = parseInt(document.getElementById('stock').value);
+        const volume   = parseFloat(document.getElementById('volume').value);
 
-        if (!name)       { alert('Perfume name is required.'); return false; }
-        if (!brand)      { alert('Brand is required.'); return false; }
+        if (!name)                      { alert('Perfume name is required.'); return false; }
+        if (!brand)                     { alert('Brand is required.'); return false; }
+        if (!catId)                     { alert('Please select a category.'); return false; }
+        if (!gender)                    { alert('Please select a gender.'); return false; }
         if (isNaN(price) || price <= 0) { alert('Please enter a valid price greater than 0.'); return false; }
         if (isNaN(stock) || stock < 0)  { alert('Stock must be 0 or more.'); return false; }
-        if (isNaN(volume) || volume <= 0) { alert('Please enter a valid volume.'); return false; }
+        if (isNaN(volume)|| volume <= 0){ alert('Please enter a valid volume.'); return false; }
         return true;
     }
 </script>

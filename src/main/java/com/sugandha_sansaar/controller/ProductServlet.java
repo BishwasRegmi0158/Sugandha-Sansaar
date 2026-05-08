@@ -1,7 +1,9 @@
 package com.sugandha_sansaar.controller;
 
+import com.sugandha_sansaar.dao.PerfumeDAO;
 import com.sugandha_sansaar.dao.ProductDao;
-import com.sugandha_sansaar.model.Product;
+import com.sugandha_sansaar.model.Category;
+import com.sugandha_sansaar.model.Perfume;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -9,64 +11,72 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Handles the product listing page.
+ * Public-facing product listing page.
  * URL: /products
- * Supports: search, family filter, gender filter
+ * Supports: search, category filter, gender filter
+ * Aligned to new SQL schema (category_id FK, ENUM gender: male/female).
  */
 @WebServlet("/products")
 public class ProductServlet extends HttpServlet {
 
     private ProductDao productDao;
+    private PerfumeDAO perfumeDAO;
 
     @Override
     public void init() {
         productDao = new ProductDao();
+        perfumeDAO = new PerfumeDAO();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 
-        String search = req.getParameter("search");
-        String family = req.getParameter("family");
-        String gender = req.getParameter("gender");
+        String search     = trim(req.getParameter("search"));
+        String categoryId = trim(req.getParameter("category"));
+        String gender     = trim(req.getParameter("gender"));
 
-        // Trim nulls to empty to simplify checks
-        if (search != null) search = search.trim();
-        if (family != null) family = family.trim();
-        if (gender != null) gender = gender.trim();
+        List<Perfume> products;
+        try {
+            if (!search.isEmpty()) {
+                products = productDao.searchProducts(search);
+                req.setAttribute("searchKeyword", search);
+            } else if (!categoryId.isEmpty()) {
+                products = productDao.getProductsByCategory(Integer.parseInt(categoryId));
+                req.setAttribute("categoryFilter", categoryId);
+            } else if (!gender.isEmpty()) {
+                products = productDao.getProductsByGender(gender);
+                req.setAttribute("genderFilter", gender);
+            } else {
+                products = productDao.getAllProducts();
+            }
 
-        List<Product> products;
+            // Load categories for the filter dropdown
+            List<Category> categories = perfumeDAO.getAllCategories();
+            req.setAttribute("products", products);
+            req.setAttribute("categories", categories);
 
-        if (search != null && !search.isEmpty()) {
-            products = productDao.searchProducts(search);
-            req.setAttribute("searchKeyword", search);
-        } else if (family != null && !family.isEmpty()) {
-            products = productDao.getProductsByFamily(family);
-            req.setAttribute("familyFilter", family);
-        } else if (gender != null && !gender.isEmpty()) {
-            products = productDao.getProductsByGender(gender);
-            req.setAttribute("genderFilter", gender);
-        } else {
-            products = productDao.getAllProducts();
+        } catch (SQLException e) {
+            req.setAttribute("errorMessage", "Could not load products: " + e.getMessage());
         }
 
-        req.setAttribute("products", products);
-        req.getRequestDispatcher("/WEB-INF/views/products.jsp").forward(req, res);
+        req.getRequestDispatcher("/WEB-INF/views/product.jsp").forward(req, res);
     }
 
-    // Search form posts → redirect to GET
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-        String search = req.getParameter("search");
-        if (search != null && !search.trim().isEmpty()) {
-            res.sendRedirect(req.getContextPath() + "/products?search=" + search.trim());
+        String search = trim(req.getParameter("search"));
+        if (!search.isEmpty()) {
+            res.sendRedirect(req.getContextPath() + "/products?search=" + search);
         } else {
             res.sendRedirect(req.getContextPath() + "/products");
         }
     }
+
+    private String trim(String s) { return s == null ? "" : s.trim(); }
 }

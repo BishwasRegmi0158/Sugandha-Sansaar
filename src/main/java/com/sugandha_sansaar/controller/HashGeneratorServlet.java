@@ -26,7 +26,7 @@ public class HashGeneratorServlet extends HttpServlet {
             return;
         }
 
-        String hash = PasswordUtil.getHashPassword(password); // fixed
+        String hash = PasswordUtil.getHashPassword(password); // ✅ fixed
 
         out.println("<h2>Password: " + password + "</h2>");
         out.println("<h2>Hash: " + hash + "</h2>");

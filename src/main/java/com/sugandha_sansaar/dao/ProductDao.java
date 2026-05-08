@@ -1,141 +1,122 @@
 package com.sugandha_sansaar.dao;
 
-import com.sugandha_sansaar.model.Product;
+import com.sugandha_sansaar.model.Perfume;
 import com.sugandha_sansaar.utils.DatabaseConnection;
 
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Handles all database queries for products.
- * Uses the existing DatabaseConnection from utils package.
+ * Public-facing DAO for the products table.
+ * Used by ProductServlet and ProductDetailServlet (shop pages).
+ * Aligned to the new SQL schema (category_id FK, DECIMAL price, ENUM gender).
  */
 public class ProductDao {
 
-    // Reusable SELECT columns
-    private static final String SELECT =
-            "SELECT product_id, product_name, brand, description, fragrance_family, " +
-                    "scent_strength, size_ml, price, stock_quantity, sold_count, " +
-                    "image_url, gender, is_active, created_at FROM products ";
-
-    // Map a ResultSet row → Product object
-    private Product mapRow(ResultSet rs) throws SQLException {
-        Product p = new Product();
-        p.setProductId(rs.getInt("product_id"));
-        p.setProductName(rs.getString("product_name"));
+    private Perfume mapRow(ResultSet rs) throws SQLException {
+        Perfume p = new Perfume();
+        p.setId(rs.getInt("id"));
+        p.setCategoryId(rs.getInt("category_id"));
+        p.setCategoryName(rs.getString("category_name"));
+        p.setName(rs.getString("name"));
         p.setBrand(rs.getString("brand"));
         p.setDescription(rs.getString("description"));
-        p.setFragranceFamily(rs.getString("fragrance_family"));
-        p.setScentStrength(rs.getString("scent_strength"));
-        p.setSizeMl(rs.getInt("size_ml"));
-        BigDecimal price = rs.getBigDecimal("price");
-        p.setPrice(price != null ? price : BigDecimal.ZERO);
-        p.setStockQuantity(rs.getInt("stock_quantity"));
-        p.setSoldCount(rs.getInt("sold_count"));
+        p.setPrice(rs.getDouble("price"));
+        p.setStock(rs.getInt("stock"));
         p.setImageUrl(rs.getString("image_url"));
+        p.setVolume(rs.getDouble("volume"));
         p.setGender(rs.getString("gender"));
-        p.setActive(rs.getBoolean("is_active"));
-        p.setCreatedAt(rs.getTimestamp("created_at"));
+        p.setActive(rs.getBoolean("active"));
         return p;
     }
 
-    /** Get all active products */
-    public List<Product> getAllProducts() {
-        List<Product> list = new ArrayList<>();
-        String sql = SELECT + "WHERE is_active = 1 ORDER BY product_name ASC";
+    private static final String BASE_SELECT =
+            "SELECT p.*, c.name AS category_name " +
+                    "FROM products p JOIN categories c ON p.category_id = c.id ";
+
+    /** All active products for the public shop. */
+    public List<Perfume> getAllProducts() throws SQLException {
+        String sql = BASE_SELECT + "WHERE p.active = 1 ORDER BY p.name ASC";
+        List<Perfume> list = new ArrayList<>();
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) list.add(mapRow(rs));
-        } catch (SQLException e) {
-            System.out.println("ProductDao.getAllProducts error: " + e.getMessage());
         }
         return list;
     }
 
-    /** Get one product by ID */
-    public Product getProductById(int id) {
-        String sql = SELECT + "WHERE is_active = 1 AND product_id = ?";
+    /** Single active product by id. */
+    public Perfume getProductById(int id) throws SQLException {
+        String sql = BASE_SELECT + "WHERE p.active = 1 AND p.id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return mapRow(rs);
             }
-        } catch (SQLException e) {
-            System.out.println("ProductDao.getProductById error: " + e.getMessage());
         }
         return null;
     }
 
-    /** Search by keyword (name, brand, or description) */
-    public List<Product> searchProducts(String keyword) {
-        List<Product> list = new ArrayList<>();
-        String sql = SELECT + "WHERE is_active = 1 AND " +
-                "(product_name LIKE ? OR brand LIKE ? OR description LIKE ?) " +
-                "ORDER BY product_name ASC";
+    /** Search active products by name, brand, or description. */
+    public List<Perfume> searchProducts(String keyword) throws SQLException {
+        String sql = BASE_SELECT +
+                "WHERE p.active = 1 AND (p.name LIKE ? OR p.brand LIKE ? OR p.description LIKE ?) " +
+                "ORDER BY p.name ASC";
+        List<Perfume> list = new ArrayList<>();
+        String like = "%" + keyword + "%";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            String p = "%" + keyword + "%";
-            ps.setString(1, p); ps.setString(2, p); ps.setString(3, p);
+            ps.setString(1, like); ps.setString(2, like); ps.setString(3, like);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) list.add(mapRow(rs));
             }
-        } catch (SQLException e) {
-            System.out.println("ProductDao.searchProducts error: " + e.getMessage());
         }
         return list;
     }
 
-    /** Filter by fragrance family */
-    public List<Product> getProductsByFamily(String family) {
-        List<Product> list = new ArrayList<>();
-        String sql = SELECT + "WHERE is_active = 1 AND fragrance_family = ? ORDER BY product_name ASC";
+    /** Filter active products by category id. */
+    public List<Perfume> getProductsByCategory(int categoryId) throws SQLException {
+        String sql = BASE_SELECT + "WHERE p.active = 1 AND p.category_id = ? ORDER BY p.name ASC";
+        List<Perfume> list = new ArrayList<>();
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, family);
+            ps.setInt(1, categoryId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) list.add(mapRow(rs));
             }
-        } catch (SQLException e) {
-            System.out.println("ProductDao.getProductsByFamily error: " + e.getMessage());
         }
         return list;
     }
 
-    /** Filter by gender */
-    public List<Product> getProductsByGender(String gender) {
-        List<Product> list = new ArrayList<>();
-        String sql = SELECT + "WHERE is_active = 1 AND gender = ? ORDER BY product_name ASC";
+    /** Filter active products by gender (male / female). */
+    public List<Perfume> getProductsByGender(String gender) throws SQLException {
+        String sql = BASE_SELECT + "WHERE p.active = 1 AND p.gender = ? ORDER BY p.name ASC";
+        List<Perfume> list = new ArrayList<>();
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, gender);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) list.add(mapRow(rs));
             }
-        } catch (SQLException e) {
-            System.out.println("ProductDao.getProductsByGender error: " + e.getMessage());
         }
         return list;
     }
 
-    /** Get related products (same family, different product) — used on detail page */
-    public List<Product> getRelatedProducts(String family, int excludeId, int limit) {
-        List<Product> list = new ArrayList<>();
-        String sql = SELECT + "WHERE is_active = 1 AND fragrance_family = ? AND product_id != ? " +
-                "ORDER BY sold_count DESC LIMIT ?";
+    /** Related products — same category, excluding current product. */
+    public List<Perfume> getRelatedProducts(int categoryId, int excludeId, int limit) throws SQLException {
+        String sql = BASE_SELECT +
+                "WHERE p.active = 1 AND p.category_id = ? AND p.id != ? " +
+                "ORDER BY p.id DESC LIMIT ?";
+        List<Perfume> list = new ArrayList<>();
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, family);
-            ps.setInt(2, excludeId);
-            ps.setInt(3, limit);
+            ps.setInt(1, categoryId); ps.setInt(2, excludeId); ps.setInt(3, limit);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) list.add(mapRow(rs));
             }
-        } catch (SQLException e) {
-            System.out.println("ProductDao.getRelatedProducts error: " + e.getMessage());
         }
         return list;
     }
