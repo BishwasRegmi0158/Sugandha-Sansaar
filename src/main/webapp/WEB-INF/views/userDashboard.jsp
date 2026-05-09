@@ -2,12 +2,10 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
-
 <jsp:include page="/WEB-INF/templates/head.jsp">
-    <jsp:param name="title" value="Sugandha Sansaar — My Dashboard" />
+    <jsp:param name="title"   value="Sugandha Sansaar — Dashboard" />
     <jsp:param name="cssFile" value="userDashboard" />
 </jsp:include>
-
 <body>
 <div class="dashboard-page">
 
@@ -28,18 +26,16 @@
         </div>
     </nav>
 
-    <%-- Welcome header with profile pic --%>
+    <%-- Welcome header --%>
     <div class="dashboard-header">
         <c:choose>
             <c:when test="${not empty sessionScope.loggedUser.profilePic}">
                 <img src="${pageContext.request.contextPath}/static/images/profiles/${sessionScope.loggedUser.profilePic}"
-                     alt="Profile"
-                     class="header-avatar" />
+                     alt="Profile" class="header-avatar" />
             </c:when>
             <c:otherwise>
                 <img src="${pageContext.request.contextPath}/static/images/profiles/default.png"
-                     alt="Profile"
-                     class="header-avatar" />
+                     alt="Profile" class="header-avatar" />
             </c:otherwise>
         </c:choose>
         <div>
@@ -99,7 +95,7 @@
         </c:choose>
     </div>
 
-    <%-- My Cart --%>
+    <%-- Cart Mini Preview --%>
     <div class="section">
         <h2>My Cart
             <a href="${pageContext.request.contextPath}/user/cart"
@@ -108,7 +104,9 @@
         <c:choose>
             <c:when test="${empty cartItems}">
                 <p class="no-data">Your cart is empty.
-                    <a href="${pageContext.request.contextPath}/search">Start shopping →</a>
+                    <a href="${pageContext.request.contextPath}/search">
+                        Start shopping →
+                    </a>
                 </p>
             </c:when>
             <c:otherwise>
@@ -127,6 +125,7 @@
                                   method="post">
                                 <input type="hidden" name="productId" value="${item.productId}" />
                                 <input type="hidden" name="action"    value="remove" />
+                                <input type="hidden" name="redirect"  value="dashboard" />
                                 <button type="submit" class="btn-remove-mini">✕</button>
                             </form>
                         </div>
@@ -142,33 +141,38 @@
         <div class="product-grid">
             <c:forEach var="product" items="${products}">
                 <div class="product-card">
-                    <img src="${pageContext.request.contextPath}/static/images/products/${product.imageUrl}"
-                         alt="<c:out value='${product.name}' />" />
-                    <div class="product-info">
-                        <h3><c:out value="${product.name}" /></h3>
-                        <p class="brand"><c:out value="${product.brand}" /></p>
-                        <p class="price">Rs. <c:out value="${product.price}" /></p>
-                        <c:if test="${not empty product.volume}">
-                            <p class="volume"><c:out value="${product.volume}" /> ml</p>
-                        </c:if>
-                        <p class="stock-status">
-                            <c:choose>
-                                <c:when test="${product.stock > 0}">
-                                    <span class="in-stock">In Stock</span>
-                                </c:when>
-                                <c:otherwise>
-                                    <span class="out-of-stock">Out of Stock</span>
-                                </c:otherwise>
-                            </c:choose>
-                        </p>
-                    </div>
+                    <a href="${pageContext.request.contextPath}/product?id=${product.id}"
+                       class="product-link">
+                        <img src="${pageContext.request.contextPath}/static/images/products/${product.imageUrl}"
+                             alt="<c:out value='${product.name}' />" />
+                        <div class="product-info">
+                            <h3><c:out value="${product.name}" /></h3>
+                            <p class="brand"><c:out value="${product.brand}" /></p>
+                            <p class="price">Rs. <c:out value="${product.price}" /></p>
+                            <c:if test="${not empty product.volume}">
+                                <p class="volume"><c:out value="${product.volume}" /> ml</p>
+                            </c:if>
+                            <p class="stock-status">
+                                <c:choose>
+                                    <c:when test="${product.stock > 0}">
+                                        <span class="in-stock">In Stock</span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span class="out-of-stock">Out of Stock</span>
+                                    </c:otherwise>
+                                </c:choose>
+                            </p>
+                        </div>
+                    </a>
                     <c:if test="${product.stock > 0}">
                         <form action="${pageContext.request.contextPath}/user/cart"
                               method="post">
                             <input type="hidden" name="productId" value="${product.id}" />
                             <input type="hidden" name="action"    value="add" />
                             <input type="hidden" name="quantity"  value="1" />
-                            <button type="submit" class="btn-add-cart">🛒 Add to Cart</button>
+                            <button type="submit" class="btn-add-cart">
+                                🛒 Add to Cart
+                            </button>
                         </form>
                     </c:if>
                 </div>
