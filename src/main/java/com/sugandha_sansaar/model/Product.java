@@ -4,125 +4,100 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
- * Represents a perfume product in Sugandha Sansaar store.
+ * Model for the `products` table.
+ *
+ * SQL columns (exact match):
+ *   id, category_id, name, brand, description,
+ *   price, stock, image_url, volume, gender, active,
+ *   created_at, updated_at
+ *
+ * NOTE: `categoryName` is a transient field populated by a LEFT JOIN
+ * in ProductDao. It is NOT a DB column — used only for display in JSPs.
+ *
+ * The old Perfume.java is REMOVED. Product.java replaces it entirely
+ * because the SQL only has a `products` table, not a `perfumes` table.
  */
 public class Product {
 
-    private int productId;
-    private String productName;
-    private String brand;
-    private String description;
-    private String fragranceFamily;   // Floral, Woody, Oriental, Fresh, Citrus
-    private String scentStrength;     // Eau de Parfum, Eau de Toilette, etc.
-    private int sizeMl;
+    private int        id;
+    private int        categoryId;
+    private String     name;
+    private String     brand;
+    private String     description;
     private BigDecimal price;
-    private int stockQuantity;
-    private int soldCount;
-    private String imageUrl;
-    private String gender;            // Men, Women, Unisex
-    private boolean isActive;
-    private Timestamp createdAt;
+    private int        stock;
+    private String     imageUrl;
+    private BigDecimal volume;       // ml  (DECIMAL 6,2 in DB)
+    private String     gender;       // DB ENUM: 'male' | 'female'
+    private boolean    active;
+    private Timestamp  createdAt;
+    private Timestamp  updatedAt;
 
-    // ---- Constructors ----
+    // Transient — populated by JOIN in DAO, not stored in DB
+    private String categoryName;
 
     public Product() {}
 
-    // ---- Business Methods ----
+    // ── Business helpers ──────────────────────────────────────────────────────
 
-    /** Returns true if the product has stock available */
+    /** Returns true when at least one unit is in stock. */
     public boolean isInStock() {
-        return this.stockQuantity > 0;
+        return this.stock > 0;
     }
 
-    /** Returns price formatted as ₹1,234.00 */
+    /** Returns price formatted as Rs 1,234.00 (Nepali Rupees). */
     public String getFormattedPrice() {
-        if (this.price == null) return "₹0.00";
-        return String.format("₹%.2f", this.price);
+        if (this.price == null) return "Rs 0.00";
+        return String.format("Rs %.2f", this.price);
     }
 
-    // ---- Getters & Setters ----
+    // ── Getters & Setters ─────────────────────────────────────────────────────
 
-    public int getProductId() {
-        return productId;}
+    public int getId()                          { return id; }
+    public void setId(int id)                   { this.id = id; }
 
-    public void setProductId(int productId) {
-        this.productId = productId; }
+    public int getCategoryId()                  { return categoryId; }
+    public void setCategoryId(int c)            { this.categoryId = c; }
 
-    public String getProductName() {
-        return productName; }
+    public String getName()                     { return name; }
+    public void setName(String name)            { this.name = name; }
 
-    public void setProductName(String productName) {
-        this.productName = productName; }
+    public String getBrand()                    { return brand; }
+    public void setBrand(String brand)          { this.brand = brand; }
 
-    public String getBrand() {
-        return brand; }
+    public String getDescription()              { return description; }
+    public void setDescription(String d)        { this.description = d; }
 
-    public void setBrand(String brand) {
-        this.brand = brand; }
+    public BigDecimal getPrice()                { return price; }
+    public void setPrice(BigDecimal price)      { this.price = price; }
 
-    public String getDescription() {
-        return description; }
+    public int getStock()                       { return stock; }
+    public void setStock(int stock)             { this.stock = stock; }
 
-    public void setDescription(String description) {
-        this.description = description; }
+    public String getImageUrl()                 { return imageUrl; }
+    public void setImageUrl(String url)         { this.imageUrl = url; }
 
-    public String getFragranceFamily() {
-        return fragranceFamily; }
+    public BigDecimal getVolume()               { return volume; }
+    public void setVolume(BigDecimal volume)    { this.volume = volume; }
 
-    public void setFragranceFamily(String fragranceFamily) {
-        this.fragranceFamily = fragranceFamily; }
+    public String getGender()                   { return gender; }
+    public void setGender(String gender)        { this.gender = gender; }
 
-    public String getScentStrength() {
-        return scentStrength; }
+    public boolean isActive()                   { return active; }
+    public void setActive(boolean active)       { this.active = active; }
 
-    public void setScentStrength(String scentStrength) {
-        this.scentStrength = scentStrength; }
+    public Timestamp getCreatedAt()             { return createdAt; }
+    public void setCreatedAt(Timestamp t)       { this.createdAt = t; }
 
-    public int getSizeMl() {
-        return sizeMl; }
+    public Timestamp getUpdatedAt()             { return updatedAt; }
+    public void setUpdatedAt(Timestamp t)       { this.updatedAt = t; }
 
-    public void setSizeMl(int sizeMl) {
-        this.sizeMl = sizeMl; }
+    public String getCategoryName()             { return categoryName; }
+    public void setCategoryName(String n)       { this.categoryName = n; }
 
-    public BigDecimal getPrice() {
-        return price; }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price; }
-
-    public int getStockQuantity() {
-        return stockQuantity; }
-
-    public void setStockQuantity(int stockQuantity) {
-        this.stockQuantity = stockQuantity; }
-
-    public int getSoldCount() {
-        return soldCount; }
-
-    public void setSoldCount(int soldCount) {
-        this.soldCount = soldCount; }
-
-    public String getImageUrl() {
-        return imageUrl; }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl; }
-
-    public String getGender() {
-        return gender; }
-
-    public void setGender(String gender) {
-        this.gender = gender; }
-
-    public boolean isActive() {
-        return isActive; }
-
-    public void setActive(boolean active) {
-        isActive = active; }
-
-    public Timestamp getCreatedAt() {
-        return createdAt; }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt; }
+    @Override
+    public String toString() {
+        return "Product{id=" + id + ", name='" + name + "', brand='" + brand
+                + "', price=" + price + ", stock=" + stock + "}";
+    }
 }

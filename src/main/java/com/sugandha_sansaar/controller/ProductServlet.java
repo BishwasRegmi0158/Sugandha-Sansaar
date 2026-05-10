@@ -1,9 +1,10 @@
 package com.sugandha_sansaar.controller;
 
-import com.sugandha_sansaar.dao.PerfumeDAO;
+import com.sugandha_sansaar.dao.CategoryDao;
 import com.sugandha_sansaar.dao.ProductDao;
 import com.sugandha_sansaar.model.Category;
-import com.sugandha_sansaar.model.Perfume;
+import com.sugandha_sansaar.model.Product;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,72 +12,82 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Public-facing product listing page.
+ * Public product listing page.
+ *
  * URL: /products
- * Supports: search, category filter, gender filter
- * Aligned to new SQL schema (category_id FK, ENUM gender: male/female).
+ *
+ * GET parameters (all optional):
+ *   search   — keyword search across name, brand, description
+ *   category — category ID filter (int)
+ *   gender   — 'male' | 'female'
+ *
+ * Forwards to: /WEB-INF/views/product.jsp
+ *
+ * REPLACES old ProductServlet which used the wrong column names.
  */
 @WebServlet("/products")
 public class ProductServlet extends HttpServlet {
 
-    private ProductDao productDao;
-    private PerfumeDAO perfumeDAO;
+    private ProductDao  productDao;
+    private CategoryDao categoryDao;
 
     @Override
     public void init() {
-        productDao = new ProductDao();
-        perfumeDAO = new PerfumeDAO();
+        productDao  = new ProductDao();
+        categoryDao = new CategoryDao();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 
-        String search     = trim(req.getParameter("search"));
-        String categoryId = trim(req.getParameter("category"));
-        String gender     = trim(req.getParameter("gender"));
+        String search        = sanitize(req.getParameter("search"));
+        String categoryParam = sanitize(req.getParameter("category"));
+        String gender        = sanitize(req.getParameter("gender"));
 
-        List<Perfume> products;
-        try {
-            if (!search.isEmpty()) {
-                products = productDao.searchProducts(search);
-                req.setAttribute("searchKeyword", search);
-            } else if (!categoryId.isEmpty()) {
-                products = productDao.getProductsByCategory(Integer.parseInt(categoryId));
+        List<Product> products;
+
+        if (!search.isEmpty()) {
+            products = productDao.searchProducts(search);
+            req.setAttribute("searchKeyword", search);
+
+        } else if (!categoryParam.isEmpty()) {
+            try {
+                int categoryId = Integer.parseInt(categoryParam);
+                products = productDao.getProductsByCategory(categoryId);
                 req.setAttribute("categoryFilter", categoryId);
-            } else if (!gender.isEmpty()) {
-                products = productDao.getProductsByGender(gender);
-                req.setAttribute("genderFilter", gender);
-            } else {
+            } catch (NumberFormatException e) {
                 products = productDao.getAllProducts();
             }
 
-            // Load categories for the filter dropdown
-            List<Category> categories = perfumeDAO.getAllCategories();
-            req.setAttribute("products", products);
-            req.setAttribute("categories", categories);
+        } else if (!gender.isEmpty()) {
+            products = productDao.getProductsByGender(gender);
+            req.setAttribute("genderFilter", gender);
 
-        } catch (SQLException e) {
-            req.setAttribute("errorMessage", "Could not load products: " + e.getMessage());
+        } else {
+            products = productDao.getAllProducts();
         }
 
+        List<Category> categories = categoryDao.getAllCategories();
+
+        req.setAttribute("products",   products);
+        req.setAttribute("categories", categories);
         req.getRequestDispatcher("/WEB-INF/views/product.jsp").forward(req, res);
     }
 
+    /** POST search form → redirect to GET to prevent re-submit on refresh */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-        String search = trim(req.getParameter("search"));
-        if (!search.isEmpty()) {
-            res.sendRedirect(req.getContextPath() + "/products?search=" + search);
-        } else {
-            res.sendRedirect(req.getContextPath() + "/products");
-        }
+        String search = sanitize(req.getParameter("search"));
+        res.sendRedirect(req.getContextPath() + "/products" +
+                (search.isEmpty() ? "" : "?search=" + search));
     }
 
-    private String trim(String s) { return s == null ? "" : s.trim(); }
+    private String sanitize(String value) {
+        return value == null ? "" : value.trim();
+    }
 }

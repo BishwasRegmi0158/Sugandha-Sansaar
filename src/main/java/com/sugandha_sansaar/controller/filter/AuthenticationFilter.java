@@ -14,6 +14,16 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/**
+ * Authentication and Authorization filter.
+ *
+ * CHANGED from original:
+ *   - /products and /product-detail are now PUBLIC — no login needed.
+ *     Customers can browse the catalogue without an account.
+ *   - All /admin/* routes still require roleId == 1.
+ *   - All /user/*  routes still require roleId == 2.
+ *   - /login and /register remain open as before.
+ */
 @WebFilter("/*")
 public class AuthenticationFilter implements Filter {
 
@@ -23,55 +33,61 @@ public class AuthenticationFilter implements Filter {
                          FilterChain chain)
             throws IOException, ServletException {
 
-        HttpServletRequest  req         = (HttpServletRequest)  request;
-        HttpServletResponse res         = (HttpServletResponse) response;
+        HttpServletRequest  req  = (HttpServletRequest)  request;
+        HttpServletResponse res  = (HttpServletResponse) response;
 
         String uri         = req.getRequestURI();
         String contextPath = req.getContextPath();
         String path        = uri.substring(contextPath.length());
 
-        // Always allow static resources to pass through
+        // 1. Always allow static resources
         if (path.startsWith("/static/")) {
             chain.doFilter(request, response);
             return;
         }
 
-        // Get logged in user from session
-        User loggedUser = (User) SessionUtil.getAttribute(req, "loggedUser");
+        // 2. Public pages — no login required
+        boolean isPublic = "/login".equals(path)
+                || "/register".equals(path)
+                || path.equals("/products")
+                || path.startsWith("/products?")
+                || path.equals("/product-detail")
+                || path.startsWith("/product-detail?");
+
+        User    loggedUser = (User) SessionUtil.getAttribute(req, "loggedUser");
         boolean isLoggedIn = loggedUser != null;
 
-        // Pages that do not require login
-        boolean isAuthPage = "/login".equals(path) || "/register".equals(path);
-
-        // If not logged in and trying to access a protected page → redirect to login
-        if (!isLoggedIn && !isAuthPage) {
-            res.sendRedirect(contextPath + "/login");
-            return;
-        }
-
-        // If already logged in and trying to access login or register → redirect to dashboard
-        if (isLoggedIn && isAuthPage) {
-            if (loggedUser.getRoleId() == 1) {
-                res.sendRedirect(contextPath + "/admin/dashboard");
+        // 3. Not logged in — allow public, block everything else
+        if (!isLoggedIn) {
+            if (isPublic) {
+                chain.doFilter(request, response);
             } else {
-                res.sendRedirect(contextPath + "/user/dashboard");
+                res.sendRedirect(contextPath + "/login");
             }
             return;
         }
 
-        // Admin trying to access /user pages → block and redirect to admin dashboard
-        if (isLoggedIn && loggedUser.getRoleId() == 1 && path.startsWith("/user/")) {
+        // 4. Already logged in — don't let them back to login/register
+        if ("/login".equals(path) || "/register".equals(path)) {
+            res.sendRedirect(loggedUser.getRoleId() == 1
+                    ? contextPath + "/admin/dashboard"
+                    : contextPath + "/user/dashboard");
+            return;
+        }
+
+        // 5. Admin accessing /user/* — redirect to admin dashboard
+        if (loggedUser.getRoleId() == 1 && path.startsWith("/user/")) {
             res.sendRedirect(contextPath + "/admin/dashboard");
             return;
         }
 
-        // User trying to access /admin pages → block and redirect to user dashboard
-        if (isLoggedIn && loggedUser.getRoleId() == 2 && path.startsWith("/admin/")) {
+        // 6. Normal user accessing /admin/* — redirect to user dashboard
+        if (loggedUser.getRoleId() == 2 && path.startsWith("/admin/")) {
             res.sendRedirect(contextPath + "/user/dashboard");
             return;
         }
 
-        // All good — continue
+        // 7. All clear
         chain.doFilter(request, response);
     }
 }

@@ -6,9 +6,9 @@
          version="6.0"
          metadata-complete="false">
 
-    <!-- Welcome file (optional; remove or adjust) -->
+    <!-- Changed from /register to /products so the home page is the catalogue -->
     <welcome-file-list>
-        <welcome-file>register</welcome-file>
+        <welcome-file>products</welcome-file>
     </welcome-file-list>
 
     <!-- Custom 404 error page -->
@@ -16,5 +16,14 @@
         <error-code>404</error-code>
         <location>/error404.jsp</location>
     </error-page>
+
+    <filter>
+        <filter-name>AuthenticationFilter</filter-name>
+        <filter-class>com.sugandha_sansaar.controller.filter.AuthenticationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/admin/*</url-pattern>
+    </filter-mapping>
 
 </web-app>
