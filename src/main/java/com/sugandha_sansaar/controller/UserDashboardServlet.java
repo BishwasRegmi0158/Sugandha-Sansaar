@@ -34,7 +34,7 @@ public class UserDashboardServlet extends HttpServlet {
             return;
         }
         if (loggedUser.getRoleId() != 2) {
-            response.sendRedirect(request.getContextPath() + "userdashboard");
+            response.sendRedirect(request.getContextPath() + "/userdashboard");
             return;
         }
 

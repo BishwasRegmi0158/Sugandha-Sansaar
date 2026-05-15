@@ -2,16 +2,18 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
+
 <jsp:include page="/WEB-INF/templates/head.jsp">
     <jsp:param name="title"   value="Sugandha Sansaar — Dashboard" />
     <jsp:param name="cssFile" value="userDashboard" />
 </jsp:include>
+
 <body>
 <div class="dashboard-page">
 
     <%-- Navbar --%>
     <nav class="dashboard-nav">
-        <div class="nav-brand"> Sugandha Sansaar</div>
+        <div class="nav-brand">Sugandha Sansaar</div>
         <div class="nav-links">
             <a href="${pageContext.request.contextPath}/user/dashboard">Home</a>
             <a href="${pageContext.request.contextPath}/search">Shop</a>
@@ -30,12 +32,14 @@
     <div class="dashboard-header">
         <c:choose>
             <c:when test="${not empty sessionScope.loggedUser.profilePic}">
-                <img src="${pageContext.request.contextPath}/static/images/profiles/${sessionScope.loggedUser.profilePic}"
-                     alt="Profile" class="header-avatar" />
+                <img src="${pageContext.request.contextPath}/image/profiles/${sessionScope.loggedUser.profilePic}"
+                     alt="Profile"
+                     class="header-avatar" />
             </c:when>
             <c:otherwise>
                 <img src="${pageContext.request.contextPath}/static/images/profiles/default.png"
-                     alt="Profile" class="header-avatar" />
+                     alt="Profile"
+                     class="header-avatar" />
             </c:otherwise>
         </c:choose>
         <div>
@@ -82,9 +86,9 @@
                             <td><c:out value="${order.deliveryCity}" /></td>
                             <td>Rs. <c:out value="${order.totalAmount}" /></td>
                             <td>
-                                    <span class="status-badge status-${order.status}">
-                                        <c:out value="${order.status}" />
-                                    </span>
+                                <span class="status-badge status-${order.status}">
+                                    <c:out value="${order.status}" />
+                                </span>
                             </td>
                             <td><c:out value="${order.orderedAt}" /></td>
                         </tr>
@@ -104,16 +108,14 @@
         <c:choose>
             <c:when test="${empty cartItems}">
                 <p class="no-data">Your cart is empty.
-                    <a href="${pageContext.request.contextPath}/search">
-                        Start shopping →
-                    </a>
+                    <a href="${pageContext.request.contextPath}/search">Start shopping →</a>
                 </p>
             </c:when>
             <c:otherwise>
                 <div class="cart-mini">
                     <c:forEach var="item" items="${cartItems}">
                         <div class="cart-mini-item">
-                            <img src="${pageContext.request.contextPath}/static/images/products/${item.productImageUrl}"
+                            <img src="${pageContext.request.contextPath}/image/products/${item.productImageUrl}"
                                  alt="<c:out value='${item.productName}' />" />
                             <div class="cart-mini-details">
                                 <strong><c:out value="${item.productName}" /></strong>
@@ -143,7 +145,7 @@
                 <div class="product-card">
                     <a href="${pageContext.request.contextPath}/product?id=${product.id}"
                        class="product-link">
-                        <img src="${pageContext.request.contextPath}/static/images/products/${product.imageUrl}"
+                        <img src="${pageContext.request.contextPath}/image/products/${product.imageUrl}"
                              alt="<c:out value='${product.name}' />" />
                         <div class="product-info">
                             <h3><c:out value="${product.name}" /></h3>
@@ -170,9 +172,7 @@
                             <input type="hidden" name="productId" value="${product.id}" />
                             <input type="hidden" name="action"    value="add" />
                             <input type="hidden" name="quantity"  value="1" />
-                            <button type="submit" class="btn-add-cart">
-                                🛒 Add to Cart
-                            </button>
+                            <button type="submit" class="btn-add-cart">🛒 Add to Cart</button>
                         </form>
                     </c:if>
                 </div>
