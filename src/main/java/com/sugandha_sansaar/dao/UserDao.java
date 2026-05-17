@@ -2,6 +2,7 @@ package com.sugandha_sansaar.dao;
 
 import com.sugandha_sansaar.model.User;
 import java.util.ArrayList;
+import java.sql.SQLException;
 
 public interface UserDao {
     boolean insertUser(User user);
@@ -13,4 +14,5 @@ public interface UserDao {
     boolean deleteUser(int id);
     boolean updateActiveStatus(int id, int isActive);
     ArrayList<User> fetchUsersByRoleId(int roleId);
+    int getTotalUsers() throws SQLException;
 }

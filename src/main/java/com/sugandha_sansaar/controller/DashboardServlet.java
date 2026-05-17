@@ -5,6 +5,8 @@ import com.sugandha_sansaar.model.User;
 
 
 import com.sugandha_sansaar.service.PerfumeService;
+import com.sugandha_sansaar.dao.UserDao;
+import com.sugandha_sansaar.dao.UserDaoImpl;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -28,10 +30,12 @@ import java.sql.SQLException;
 public class DashboardServlet extends HttpServlet {
 
     private PerfumeService perfumeService;
+    private UserDao userDao;
 
     @Override
     public void init() {
         perfumeService = new PerfumeService();
+        userDao = new UserDaoImpl();
     }
 
     @Override
@@ -57,6 +61,7 @@ public class DashboardServlet extends HttpServlet {
             request.setAttribute("lowStock",        perfumeService.getLowStockCount());
             request.setAttribute("totalBrands",     perfumeService.getTotalBrands());
             request.setAttribute("recentPerfumes",  perfumeService.getAllPerfumes());
+            request.setAttribute("totalUsers",      userDao.getTotalUsers());
 
         } catch (SQLException e) {
             System.err.println("AdminDashboardController error: " + e.getMessage());

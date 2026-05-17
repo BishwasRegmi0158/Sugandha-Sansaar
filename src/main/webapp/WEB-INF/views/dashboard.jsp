@@ -28,6 +28,9 @@
       <a href="${pageContext.request.contextPath}/admin/perfumes?action=add" class="nav-link">
         ➕ Add Perfume
       </a>
+      <a href="${pageContext.request.contextPath}/admin/users" class="nav-link">
+        👤 Manage Users
+      </a>
       <a href="${pageContext.request.contextPath}/logout" class="nav-link nav-logout">
         🚪 Logout
       </a>
@@ -76,7 +79,15 @@
           <p>Out of Stock</p>
         </div>
       </div>
+      <div class="stat-card stat-purple">
+        <div class="stat-icon">👤</div>
+        <div class="stat-info">
+          <h3>${totalUsers}</h3>
+          <p>Total Users</p>
+        </div>
+      </div>
     </section>
+
 
     <%-- ── Recent Products Table ──────────────────────────────────────────── --%>
     <section class="recent-section">

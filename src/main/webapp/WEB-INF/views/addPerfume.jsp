@@ -17,10 +17,21 @@
       <span class="logo-text">Sugandha Sansaar</span>
     </div>
     <nav class="sidebar-nav">
-      <a href="${pageContext.request.contextPath}/admin/dashboard" class="nav-link">📊 Dashboard</a>
-      <a href="${pageContext.request.contextPath}/admin/perfumes" class="nav-link">🧴 Manage Perfumes</a>
-      <a href="${pageContext.request.contextPath}/admin/perfumes?action=add" class="nav-link active">➕ Add Perfume</a>
-      <a href="${pageContext.request.contextPath}/logout" class="nav-link nav-logout">🚪 Logout</a>
+      <a href="${pageContext.request.contextPath}/admin/dashboard" class="nav-link">
+        📊 Dashboard
+      </a>
+      <a href="${pageContext.request.contextPath}/admin/perfumes" class="nav-link">
+        🧴 Manage Perfumes
+      </a>
+      <a href="${pageContext.request.contextPath}/admin/perfumes?action=add" class="nav-link active">
+        ➕ Add Perfume
+      </a>
+      <a href="${pageContext.request.contextPath}/admin/users" class="nav-link">
+        👤 Manage Users
+      </a>
+      <a href="${pageContext.request.contextPath}/logout" class="nav-link nav-logout">
+        🚪 Logout
+      </a>
     </nav>
   </aside>
 
