@@ -7,7 +7,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Manage Perfumes – Admin</title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/admin.css">
 </head>
 <body>
 
@@ -15,8 +15,8 @@
   <%-- Sidebar --%>
   <aside class="sidebar">
     <div class="sidebar-logo">
-      <span class="logo-icon">🌸</span>
-      <span class="logo-text">Essence Admin</span>
+      <span class="logo-icon"></span>
+      <span class="logo-text">Sugandha Sansaar</span>
     </div>
     <nav class="sidebar-nav">
       <a href="${pageContext.request.contextPath}/admin/dashboard" class="nav-link">📊 Dashboard</a>
@@ -86,7 +86,7 @@
                 <td>${p.name}</td>
                 <td>${p.brand}</td>
                 <td>${p.category}</td>
-                <td>$<fmt:formatNumber value="${p.price}" pattern="#,##0.00"/></td>
+                <td>Rs. <fmt:formatNumber value="${p.price}" pattern="#,##0.00"/></td>
                 <td>${p.volume}</td>
                 <td>
                   <c:choose>

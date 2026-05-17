@@ -6,8 +6,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard – Essence Perfume</title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin.css">
+  <title>Admin Dashboard – Sugandha Sansaar</title>
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/admin.css">
 </head>
 <body>
 
@@ -15,8 +15,8 @@
 <div class="admin-wrapper">
   <aside class="sidebar">
     <div class="sidebar-logo">
-      <span class="logo-icon">Admin</span>
-      <span class="logo-text">Essence Admin</span>
+      <span class="logo-icon"></span>
+      <span class="logo-text">Sugandha Sansaar</span>
     </div>
     <nav class="sidebar-nav">
       <a href="${pageContext.request.contextPath}/admin/dashboard" class="nav-link active">
@@ -38,7 +38,7 @@
   <main class="main-content">
     <header class="page-header">
       <h1>Admin Dashboard</h1>
-      <p>Welcome back, <strong>${sessionScope.username}</strong></p>
+      <p>Welcome back, <strong>${sessionScope.loggedUser.fullName}</strong></p>
     </header>
 
     <%-- Error message --%>
@@ -109,7 +109,7 @@
                 <td>${p.name}</td>
                 <td>${p.brand}</td>
                 <td>${p.category}</td>
-                <td>$<fmt:formatNumber value="${p.price}" pattern="#,##0.00"/></td>
+                <td>Rs. <fmt:formatNumber value="${p.price}" pattern="#,##0.00"/></td>
                 <td>
                   <c:choose>
                     <c:when test="${p.stock == 0}">

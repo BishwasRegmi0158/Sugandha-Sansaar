@@ -3,7 +3,7 @@
    Pure CSS (no Bootstrap) using Flexbox + CSS media queries
    ================================================================ */
 
-/* ── Reset & Variables ────────────────────────────────────────── */
+/* Reset & Variables  */
 *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;

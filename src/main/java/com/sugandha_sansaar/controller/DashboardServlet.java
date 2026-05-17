@@ -1,10 +1,9 @@
 package com.sugandha_sansaar.controller;
 
+import com.sugandha_sansaar.model.User;
 
 
 
-
-import com.sugandha_sansaar.model.Perfume;
 import com.sugandha_sansaar.service.PerfumeService;
 
 import jakarta.servlet.ServletException;
@@ -39,9 +38,14 @@ public class DashboardServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // ── Role check: only ADMIN users can access ──────────────────────────────
+        // Role check: only ADMIN users can access
         HttpSession session = request.getSession(false);
-        if (session == null || !"admin".equals(session.getAttribute("role"))) {
+        if (session == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+        User user = (User) session.getAttribute("loggedUser");
+        if (user == null || user.getRoleId() != 1) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
@@ -59,7 +63,7 @@ public class DashboardServlet extends HttpServlet {
             request.setAttribute("errorMessage", "Unable to load dashboard data.");
         }
 
-        request.getRequestDispatcher("/WEB-INF/views/admin/dashboard.jsp")
+        request.getRequestDispatcher("/WEB-INF/views/dashboard.jsp")
                 .forward(request, response);
     }
 }

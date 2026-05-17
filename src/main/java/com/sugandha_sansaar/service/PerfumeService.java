@@ -2,10 +2,10 @@ package com.sugandha_sansaar.service;
 
 
 
-import com.sugandha_sansaar.dao.PerfumeDAO;
 import com.sugandha_sansaar.model.Perfume;
 import com.sugandha_sansaar.utils.ValidationUtil;
-
+import com.sugandha_sansaar.dao.PerfumeDao;
+import com.sugandha_sansaar.dao.PerfumeDaoImpl;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -18,12 +18,11 @@ import java.util.List;
  */
 public class PerfumeService{
 
-    private final PerfumeDAO perfumeDAO;
+    private final PerfumeDao perfumeDAO;
 
     public PerfumeService() {
-        this.perfumeDAO = new PerfumeDAO();
+        this.perfumeDAO = new PerfumeDaoImpl();
     }
-
     // ─── ADD ─────────────────────────────────────────────────────────────────────
 
     /**

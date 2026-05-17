@@ -5,7 +5,7 @@ package com.sugandha_sansaar.controller;
 import com.sugandha_sansaar.model.Perfume;
 import com.sugandha_sansaar.service.PerfumeService;
 import com.sugandha_sansaar.utils.ValidationUtil;
-
+import com.sugandha_sansaar.model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -40,11 +40,16 @@ public class PerfumeServlet extends HttpServlet {
         perfumeService = new PerfumeService();
     }
 
-    // ─── Helper: check admin session ─────────────────────────────────────────────
+    //  Helper: check admin session
 
     private boolean isAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
-        if (session == null || !"admin".equals(session.getAttribute("role"))) {
+        if (session == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return false;
+        }
+        User user = (User) session.getAttribute("loggedUser");
+        if (user == null || user.getRoleId() != 1) {
             response.sendRedirect(request.getContextPath() + "/login");
             return false;
         }
@@ -65,7 +70,7 @@ public class PerfumeServlet extends HttpServlet {
             if ("add".equals(action)) {
                 // Show blank Add Perfume form
                 loadCategoryAndBrandLists(request);
-                request.getRequestDispatcher("/WEB-INF/views/admin/addPerfume.jsp")
+                request.getRequestDispatcher("/WEB-INF/views/addPerfume.jsp")
                         .forward(request, response);
 
             } else if ("edit".equals(action)) {
@@ -83,7 +88,7 @@ public class PerfumeServlet extends HttpServlet {
                 }
                 request.setAttribute("perfume", perfume);
                 loadCategoryAndBrandLists(request);
-                request.getRequestDispatcher("/WEB-INF/views/admin/editPerfume.jsp")
+                request.getRequestDispatcher("/WEB-INF/views/editPerfume.jsp")
                         .forward(request, response);
 
             } else {
@@ -94,12 +99,12 @@ public class PerfumeServlet extends HttpServlet {
         } catch (SQLException e) {
             System.err.println("AdminPerfumeController.doGet error: " + e.getMessage());
             request.setAttribute("errorMessage", "Database error: " + e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/views/admin/perfumeList.jsp")
+            request.getRequestDispatcher("/WEB-INF/views/perfumeList.jsp")
                     .forward(request, response);
         }
     }
 
-    // ─── POST handler ─────────────────────────────────────────────────────────────
+    // POST handler
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -156,7 +161,7 @@ public class PerfumeServlet extends HttpServlet {
             request.setAttribute("errorMessage", error);
             request.setAttribute("perfume", perfume); // keep user's input
             loadCategoryAndBrandLists(request);
-            request.getRequestDispatcher("/WEB-INF/views/admin/addPerfume.jsp")
+            request.getRequestDispatcher("/WEB-INF/views/addPerfume.jsp")
                     .forward(request, response);
         } else {
             // Success – redirect to list with success message
@@ -185,7 +190,7 @@ public class PerfumeServlet extends HttpServlet {
             request.setAttribute("errorMessage", error);
             request.setAttribute("perfume", perfume);
             loadCategoryAndBrandLists(request);
-            request.getRequestDispatcher("/WEB-INF/views/admin/editPerfume.jsp")
+            request.getRequestDispatcher("/WEB-INF/views/editPerfume.jsp")
                     .forward(request, response);
         } else {
             HttpSession session = request.getSession();
@@ -265,7 +270,7 @@ public class PerfumeServlet extends HttpServlet {
             if (error   != null) { request.setAttribute("errorMessage", error);     session.removeAttribute("errorMessage"); }
         }
 
-        request.getRequestDispatcher("/WEB-INF/views/admin/perfumeList.jsp")
+        request.getRequestDispatcher("/WEB-INF/views/perfumeList.jsp")
                 .forward(request, response);
     }
 

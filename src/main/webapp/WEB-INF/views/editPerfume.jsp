@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Perfume – Admin</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/admin.css">
 </head>
 <body>
 
@@ -14,7 +14,7 @@
     <aside class="sidebar">
         <div class="sidebar-logo">
             <span class="logo-icon"></span>
-            <span class="logo-text">Essence Admin</span>
+            <span class="logo-text">Sugandha Sansaar</span>
         </div>
         <nav class="sidebar-nav">
             <a href="${pageContext.request.contextPath}/admin/dashboard" class="nav-link">📊 Dashboard</a>
@@ -38,7 +38,7 @@
             <form method="post" action="${pageContext.request.contextPath}/admin/perfumes"
                   onsubmit="return validateForm();">
                 <input type="hidden" name="action" value="update">
-                <input type="hidden" name="id"     value="${perfume.id}">
+                <input type="hidden" name="id" value="${perfume.id}">
 
                 <div class="form-grid">
 
@@ -80,7 +80,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="price">Price ($) <span class="required">*</span></label>
+                        <label for="price">Price (Rs.) <span class="required">*</span></label>
                         <input type="number" id="price" name="price" step="0.01" min="0.01"
                                value="${perfume.price}" required>
                     </div>

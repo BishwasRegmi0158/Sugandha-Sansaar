@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add Perfume – Admin</title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/admin.css">
 </head>
 <body>
 
@@ -14,7 +14,7 @@
   <aside class="sidebar">
     <div class="sidebar-logo">
       <span class="logo-icon"></span>
-      <span class="logo-text">Essence Admin</span>
+      <span class="logo-text">Sugandha Sansaar</span>
     </div>
     <nav class="sidebar-nav">
       <a href="${pageContext.request.contextPath}/admin/dashboard" class="nav-link">📊 Dashboard</a>
@@ -96,8 +96,8 @@
 
           <%-- Price --%>
           <div class="form-group">
-            <label for="price">Price ($) <span class="required">*</span></label>
-            <input type="number" id="price" name="price" step="0.01" min="0.01"
+            <label for="price">Price (Rs.) <span class="required">*</span></label>
+            <input type="number" id="price" name="price" step="1.00" min="1.00"
                    value="${not empty perfume ? perfume.price : ''}"
                    placeholder="0.00" required>
           </div>

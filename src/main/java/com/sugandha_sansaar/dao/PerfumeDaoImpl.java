@@ -1,8 +1,6 @@
 package com.sugandha_sansaar.dao;
 
-
 import com.sugandha_sansaar.model.Perfume;
-import com.sugandha_sansaar.utils.DatabaseConnection;
 import com.sugandha_sansaar.utils.DatabaseConnection;
 
 import java.sql.*;
@@ -10,22 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Data Access Object (DAO) for Perfume entities.
+ * Implementation of PerfumeDao interface.
  * Handles all CRUD operations against the MySQL database.
  * Used by PerfumeService (never called directly from controllers).
  *
  * @author Member 4 - Admin Dashboard
  */
-public class PerfumeDAO {
-
+public class PerfumeDaoImpl implements PerfumeDao {
 
     /**
      * Inserts a new perfume record into the database.
-     *
-     * @param perfume the Perfume object to insert
-     * @return true if insertion was successful
-     * @throws SQLException on database error
      */
+    @Override
     public boolean addPerfume(Perfume perfume) throws SQLException {
         String sql = "INSERT INTO perfumes (name, brand, category, description, price, stock, " +
                 "image_url, volume, gender, active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -56,14 +50,10 @@ public class PerfumeDAO {
         }
     }
 
-
-
     /**
      * Retrieves all perfumes from the database (admin view – includes inactive).
-     *
-     * @return list of all Perfume objects
-     * @throws SQLException on database error
      */
+    @Override
     public List<Perfume> getAllPerfumes() throws SQLException {
         String sql = "SELECT * FROM perfumes ORDER BY id DESC";
         List<Perfume> list = new ArrayList<>();
@@ -88,15 +78,10 @@ public class PerfumeDAO {
         return list;
     }
 
-
-
     /**
      * Retrieves a single perfume by its ID.
-     *
-     * @param id the perfume's primary key
-     * @return Perfume object, or null if not found
-     * @throws SQLException on database error
      */
+    @Override
     public Perfume getPerfumeById(int id) throws SQLException {
         String sql = "SELECT * FROM perfumes WHERE id = ?";
 
@@ -121,15 +106,10 @@ public class PerfumeDAO {
         return null;
     }
 
-
-
     /**
      * Updates an existing perfume record in the database.
-     *
-     * @param perfume the Perfume object with updated fields (must have valid id)
-     * @return true if update was successful
-     * @throws SQLException on database error
      */
+    @Override
     public boolean updatePerfume(Perfume perfume) throws SQLException {
         String sql = "UPDATE perfumes SET name=?, brand=?, category=?, description=?, " +
                 "price=?, stock=?, image_url=?, volume=?, gender=?, active=? WHERE id=?";
@@ -161,16 +141,10 @@ public class PerfumeDAO {
         }
     }
 
-
     /**
      * Updates only the stock quantity for a given perfume.
-     * Used by cart/order module integration as well as admin stock management.
-     *
-     * @param perfumeId the perfume's ID
-     * @param newStock  the new stock quantity
-     * @return true if update was successful
-     * @throws SQLException on database error
      */
+    @Override
     public boolean updateStock(int perfumeId, int newStock) throws SQLException {
         String sql = "UPDATE perfumes SET stock = ? WHERE id = ?";
 
@@ -190,15 +164,10 @@ public class PerfumeDAO {
         }
     }
 
-
-
     /**
      * Deletes a perfume record by ID.
-     *
-     * @param id the perfume's primary key
-     * @return true if deletion was successful
-     * @throws SQLException on database error
      */
+    @Override
     public boolean deletePerfume(int id) throws SQLException {
         String sql = "DELETE FROM perfumes WHERE id = ?";
 
@@ -217,11 +186,10 @@ public class PerfumeDAO {
         }
     }
 
-
-
     /**
      * Returns total number of perfume products in the system.
      */
+    @Override
     public int getTotalPerfumes() throws SQLException {
         return countQuery("SELECT COUNT(*) FROM perfumes");
     }
@@ -229,6 +197,7 @@ public class PerfumeDAO {
     /**
      * Returns number of perfumes with stock = 0 (out of stock).
      */
+    @Override
     public int getOutOfStockCount() throws SQLException {
         return countQuery("SELECT COUNT(*) FROM perfumes WHERE stock = 0");
     }
@@ -236,6 +205,7 @@ public class PerfumeDAO {
     /**
      * Returns number of perfumes with stock between 1 and 5 (low stock alert).
      */
+    @Override
     public int getLowStockCount() throws SQLException {
         return countQuery("SELECT COUNT(*) FROM perfumes WHERE stock BETWEEN 1 AND 5");
     }
@@ -243,15 +213,15 @@ public class PerfumeDAO {
     /**
      * Returns number of distinct brands in the system.
      */
+    @Override
     public int getTotalBrands() throws SQLException {
         return countQuery("SELECT COUNT(DISTINCT brand) FROM perfumes");
     }
 
-
-
     /**
      * Returns a distinct list of all category names.
      */
+    @Override
     public List<String> getAllCategories() throws SQLException {
         String sql = "SELECT DISTINCT category FROM perfumes ORDER BY category";
         List<String> categories = new ArrayList<>();
@@ -278,6 +248,7 @@ public class PerfumeDAO {
     /**
      * Returns a distinct list of all brand names.
      */
+    @Override
     public List<String> getAllBrands() throws SQLException {
         String sql = "SELECT DISTINCT brand FROM perfumes ORDER BY brand";
         List<String> brands = new ArrayList<>();
@@ -300,8 +271,6 @@ public class PerfumeDAO {
         }
         return brands;
     }
-
-
 
     /**
      * Maps a ResultSet row to a Perfume object.
