@@ -17,9 +17,7 @@
 <div class="login-page">
 
     <div class="login-header">
-        <img src="${pageContext.request.contextPath}/static/images/logo.png"
-             alt="Sugandha Sansaar" />
-        <h1>Sugandha Sansaar</h1>
+
     </div>
 
     <div class="login-form">
@@ -47,7 +45,7 @@
             <input type="email"
                    name="email"
                    placeholder="Email Address"
-                   value="<c:out value='${param.email}' default='' />"
+                   value="<c:out value='${not empty savedEmail ? savedEmail : param.email}' default='' />"
                    required />
 
             <input type="password"

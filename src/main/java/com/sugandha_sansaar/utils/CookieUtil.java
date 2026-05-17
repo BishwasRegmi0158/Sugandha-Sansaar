@@ -32,7 +32,7 @@ public class CookieUtil {
     public static void deleteCookie(HttpServletResponse response,
                                     String name) {
         Cookie cookie = new Cookie(name, "");
-        cookie.setMaxAge(0);
+        cookie.setMaxAge(30*60);
         cookie.setPath("/");
         response.addCookie(cookie);
     }

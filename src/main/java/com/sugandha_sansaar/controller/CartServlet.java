@@ -60,9 +60,9 @@ public class CartServlet extends HttpServlet {
             return;
         }
 
-        String action    = request.getParameter("action");
-        int    productId = Integer.parseInt(request.getParameter("productId"));
-        int    userId    = loggedUser.getId();
+        String action = request.getParameter("action");
+        int productId = Integer.parseInt(request.getParameter("productId"));
+        int userId = loggedUser.getId();
 
         switch (action) {
             case "add" -> {
@@ -83,10 +83,11 @@ public class CartServlet extends HttpServlet {
             }
         }
 
-        String redirect = request.getParameter("redirect");
-        if ("dashboard".equals(redirect))
-            response.sendRedirect(request.getContextPath() + "/user/dashboard");
-        else
+        String referer = request.getHeader("Referer");
+        if (referer != null && !referer.contains("/user/cart")) {
+            response.sendRedirect(referer); // go back to wherever they came from
+        } else {
             response.sendRedirect(request.getContextPath() + "/user/cart");
+        }
     }
 }

@@ -12,9 +12,7 @@
 <div class="register-page">
 
   <div class="register-header">
-    <img src="${pageContext.request.contextPath}/static/images/logo.png"
-         alt="Sugandha Sansaar" />
-    <h1>Sugandha Sansaar</h1>
+
   </div>
 
   <div class="register-form">

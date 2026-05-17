@@ -1,0 +1,189 @@
+/* ═══════════════════════════════════════════════════════════════
+   orders.css  —  Sugandha Sansaar order list page
+   ═══════════════════════════════════════════════════════════════ */
+
+.orders-page {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 5rem;
+}
+
+/* ── Header ──────────────────────────────────────────────────── */
+.orders-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2.2rem;
+}
+.orders-header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 300;
+    color: #2a1f14;
+    letter-spacing: 0.02em;
+    margin: 0;
+}
+.btn-shop-more {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #b8975a;
+    text-decoration: none;
+    border: 1.5px solid #b8975a;
+    border-radius: 5px;
+    padding: 0.45rem 1rem;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+}
+.btn-shop-more:hover {
+    background: #b8975a;
+    color: #fff;
+}
+
+/* ── Empty state ─────────────────────────────────────────────── */
+.orders-empty {
+    text-align: center;
+    padding: 5rem 2rem;
+}
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+.orders-empty h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.9rem;
+    font-weight: 400;
+    color: #2a1f14;
+    margin: 0 0 0.6rem;
+}
+.orders-empty p {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.95rem;
+    color: #9a8c7a;
+    margin: 0 0 2rem;
+}
+.btn-gold {
+    display: inline-block;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #1a1008;
+    background: linear-gradient(135deg, #c9a96e, #b8975a);
+    border-radius: 6px;
+    padding: 0.75rem 1.8rem;
+    transition: opacity 0.2s, transform 0.15s;
+    box-shadow: 0 3px 14px rgba(184,151,90,0.25);
+}
+.btn-gold:hover { opacity: 0.88; transform: translateY(-1px); }
+
+/* ── Orders list ─────────────────────────────────────────────── */
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* ── Order card ──────────────────────────────────────────────── */
+.order-card {
+    display: block;
+    text-decoration: none;
+    background: #faf7f2;
+    border: 1px solid #e8dfd0;
+    border-radius: 10px;
+    padding: 1.3rem 1.5rem;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+.order-card:hover {
+    border-color: #b8975a;
+    box-shadow: 0 4px 20px rgba(184,151,90,0.12);
+    transform: translateY(-1px);
+}
+
+.order-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.9rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+.order-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+.order-number {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #2a1f14;
+    letter-spacing: 0.04em;
+}
+.order-date {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.75rem;
+    color: #9a8c7a;
+    letter-spacing: 0.04em;
+}
+
+/* Status badge */
+.order-status {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 20px;
+    padding: 4px 12px;
+}
+.status-pending     { background: #fff8e8; color: #a07020; border: 1px solid #f0d080; }
+.status-processing  { background: #eaf3ff; color: #2060b0; border: 1px solid #90c0f8; }
+.status-shipped     { background: #eef8ee; color: #2a7a2a; border: 1px solid #90d090; }
+.status-delivered   { background: #f0faf0; color: #1a6a1a; border: 1px solid #70c070; }
+.status-cancelled   { background: #fff0f0; color: #a02020; border: 1px solid #f09090; }
+
+.order-card-bottom {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+.pay-method-label {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.78rem;
+    color: #9a8c7a;
+    text-transform: capitalize;
+    background: rgba(155,140,120,0.1);
+    border-radius: 4px;
+    padding: 3px 9px;
+}
+.order-total-wrap {
+    margin-left: auto;
+    text-align: right;
+}
+.order-total-label {
+    display: block;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #9a8c7a;
+}
+.order-total-amt {
+    font-family: 'Jost', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2a1f14;
+}
+.order-arrow {
+    font-size: 1.3rem;
+    color: #b8975a;
+    margin-left: 0.4rem;
+    transition: transform 0.2s;
+}
+.order-card:hover .order-arrow { transform: translateX(3px); }

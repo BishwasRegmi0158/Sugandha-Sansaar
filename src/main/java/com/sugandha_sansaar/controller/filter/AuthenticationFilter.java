@@ -54,7 +54,7 @@ public class AuthenticationFilter implements Filter {
             if (loggedUser.getRoleId() == 1) {
                 res.sendRedirect(contextPath + "/admin/dashboard");
             } else {
-                res.sendRedirect(contextPath + "/user/dashboard");
+                res.sendRedirect(contextPath + "/products");
             }
             return;
         }
@@ -67,7 +67,7 @@ public class AuthenticationFilter implements Filter {
 
         // User trying to access /admin pages → block and redirect to user dashboard
         if (isLoggedIn && loggedUser.getRoleId() == 2 && path.startsWith("/admin/")) {
-            res.sendRedirect(contextPath + "/user/dashboard");
+            res.sendRedirect(contextPath + "/products");
             return;
         }
 

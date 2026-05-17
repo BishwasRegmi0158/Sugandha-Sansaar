@@ -2,114 +2,130 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
-<jsp:include page="/WEB-INF/templates/head.jsp">
-  <jsp:param name="title"   value="Sugandha Sansaar — ${product.name}" />
-  <jsp:param name="cssFile" value="product" />
-</jsp:include>
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sugandha Sansaar — Collection</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/aura.css"/>
+</head>
 <body>
-<div class="product-detail-page">
+<nav class="ss-nav">
+  <div class="ss-nav-logo">Sugandha Sansaar</div>
+  <div class="ss-nav-search">
+    <form action="${pageContext.request.contextPath}/products" method="GET">
+      <input type="text" name="search" placeholder="Search for fragrances, brands, or collections..." value="${not empty searchKeyword ? searchKeyword : ''}"/>
+      <button type="submit">⌕</button>
+    </form>
+  </div>
+  <div class="ss-nav-links">
+    <a href="${pageContext.request.contextPath}/products">HOME</a>
+    <a href="${pageContext.request.contextPath}/products" class="active">PRODUCT</a>
+    <a href="${pageContext.request.contextPath}/about">ABOUT US</a>
+    <a href="${pageContext.request.contextPath}/user/cart">CART</a>
+    <a href="${pageContext.request.contextPath}/user/order" >Orders</a>
 
-  <nav class="detail-nav">
-    <div class="nav-brand">🌸 Sugandha Sansaar</div>
-    <div class="nav-links">
-      <a href="${pageContext.request.contextPath}/user/dashboard">Home</a>
-      <a href="${pageContext.request.contextPath}/search">Shop</a>
-      <a href="${pageContext.request.contextPath}/user/cart">
-        🛒 Cart
-        <c:if test="${cartCount > 0}">
-          <span class="cart-badge">${cartCount}</span>
-        </c:if>
-      </a>
-      <a href="${pageContext.request.contextPath}/user/profile">Profile</a>
-      <a href="${pageContext.request.contextPath}/logout">Logout</a>
-    </div>
-  </nav>
+    <a href="${pageContext.request.contextPath}/user/profile" >Profile</a>
 
-  <div class="breadcrumb">
-    <a href="${pageContext.request.contextPath}/search">← Back to Shop</a>
+    <a href="${pageContext.request.contextPath}/logout">LOGOUT</a>
+  </div>
+</nav>
+
+<div class="page-body">
+  <!-- Collection Header -->
+  <div class="collection-header">
+    <h1>Our Collection</h1>
+    <p>Discover our meticulously crafted fragrances, designed to leave a lasting impression.</p>
   </div>
 
-  <div class="product-detail-card">
-
-    <div class="product-image-section">
-      <img src="${pageContext.request.contextPath}/static/images/products/${product.imageUrl}"
-           alt="<c:out value='${product.name}' />"
-           class="product-main-image" />
-    </div>
-
-    <div class="product-info-section">
-
-      <h1 class="product-title">
-        <c:out value="${product.name}" />
-      </h1>
-      <p class="product-brand">by <c:out value="${product.brand}" /></p>
-      <p class="product-price">Rs. <c:out value="${product.price}" /></p>
-
-      <c:if test="${not empty product.volume}">
-        <p class="product-volume">Volume: <c:out value="${product.volume}" /> ml</p>
-      </c:if>
-
-      <c:if test="${not empty product.gender}">
-        <p class="product-gender">
-          For:
-          <span class="gender-tag gender-${product.gender}">
-                        <c:out value="${product.gender}" />
-                    </span>
-        </p>
-      </c:if>
-
-      <p class="product-stock-status">
-        <c:choose>
-          <c:when test="${product.stock > 0}">
-                        <span class="in-stock">
-                            ✔ In Stock (<c:out value="${product.stock}" /> left)
-                        </span>
-          </c:when>
-          <c:otherwise>
-            <span class="out-of-stock">✘ Out of Stock</span>
-          </c:otherwise>
-        </c:choose>
-      </p>
-
-      <c:if test="${not empty product.description}">
-        <div class="product-description">
-          <h3>Description</h3>
-          <p><c:out value="${product.description}" /></p>
+  <div class="filter-bar">
+    <div class="filter-inner">
+      <div class="filter-group">
+        <span class="filter-label">CATEGORY</span>
+        <div class="filter-pills">
+          <a href="${pageContext.request.contextPath}/products" class="pill ${empty categoryFilter && empty genderFilter && empty searchKeyword ? 'active' : ''}">All</a>
+          <c:forEach var="cat" items="${categories}">
+            <a href="${pageContext.request.contextPath}/products?category=${cat.id}" class="pill ${categoryFilter == cat.id ? 'active' : ''}">${cat.name}</a>
+          </c:forEach>
         </div>
-      </c:if>
-
-      <c:choose>
-        <c:when test="${product.stock > 0}">
-          <form action="${pageContext.request.contextPath}/user/cart"
-                method="post"
-                class="add-to-cart-form">
-            <input type="hidden" name="productId" value="${product.id}" />
-            <input type="hidden" name="action"    value="add" />
-            <div class="qty-row">
-              <label for="quantity">Quantity:</label>
-              <input type="number"
-                     id="quantity"
-                     name="quantity"
-                     value="1"
-                     min="1"
-                     max="${product.stock}"
-                     class="qty-input" />
-            </div>
-            <button type="submit" class="btn-add-cart">
-              🛒 Add to Cart
-            </button>
-          </form>
-        </c:when>
-        <c:otherwise>
-          <button class="btn-add-cart btn-disabled" disabled>
-            Out of Stock
-          </button>
-        </c:otherwise>
-      </c:choose>
-
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">FOR</span>
+        <div class="filter-pills">
+          <a href="${pageContext.request.contextPath}/products?gender=male" class="pill ${genderFilter == 'male' ? 'active' : ''}">Men</a>
+          <a href="${pageContext.request.contextPath}/products?gender=female" class="pill ${genderFilter == 'female' ? 'active' : ''}">Women</a>
+        </div>
+      </div>
+      <div class="results-info">
+        <c:choose>
+          <c:when test="${not empty searchKeyword}">
+            <strong>${products.size()}</strong> results for "<em>${searchKeyword}</em>"
+            <a href="${pageContext.request.contextPath}/products" class="clear-link">✕ Clear</a>
+          </c:when>
+          <c:otherwise><strong>${products.size()}</strong> products</c:otherwise>
+        </c:choose>
+      </div>
     </div>
   </div>
 
+  <main class="collection">
+    <c:choose>
+      <c:when test="${empty products}">
+        <div class="empty-state">
+          <div class="empty-icon">💨</div>
+          <h2>No products found</h2>
+          <a href="${pageContext.request.contextPath}/products" class="btn-gold">View All</a>
+        </div>
+      </c:when>
+      <c:otherwise>
+        <div class="product-grid">
+          <c:forEach var="p" items="${products}">
+            <div class="product-card">
+              <div class="card-img">
+                <c:choose>
+                  <c:when test="${not empty p.imageUrl}">
+                    <img src="${pageContext.request.contextPath}/static/images/product_images/${p.imageUrl}" alt="${p.name}" onerror="this.parentElement.innerHTML='<div class=\'img-ph\'>🌸</div>'"/>
+                  </c:when>
+                  <c:otherwise><div class="img-ph">🌸</div></c:otherwise>
+                </c:choose>
+                <c:if test="${not empty p.categoryName}"><span class="card-badge">${p.categoryName}</span></c:if>
+                <c:if test="${not p.inStock}"><div class="oos-overlay">Out of Stock</div></c:if>
+              </div>
+              <div class="card-body">
+                <p class="card-brand">${p.brand}</p>
+                <h3 class="card-name">${p.name}</h3>
+                <div class="card-meta">
+                  <c:if test="${not empty p.gender}"><span>${p.gender == 'male' ? 'Men' : 'Women'}</span></c:if>
+                  <c:if test="${p.volume != null}"><span>${p.volume}ml</span></c:if>
+                </div>
+                <div class="card-footer">
+                  <span class="card-price">${p.formattedPrice}</span>
+                  <c:choose>
+                    <c:when test="${p.inStock}">
+                      <form action="${pageContext.request.contextPath}/user/cart" method="post" style="margin:0;">
+                        <input type="hidden" name="productId" value="${p.id}"/>
+                        <input type="hidden" name="action" value="add"/>
+                        <input type="hidden" name="quantity" value="1"/>
+                        <button type="submit" class="btn-add-cart">Add to Cart</button>
+                      </form>
+                    </c:when>
+                    <c:otherwise>
+                      <a href="${pageContext.request.contextPath}/product-detail?id=${p.id}" class="btn-ghost">View →</a>
+                    </c:otherwise>
+                  </c:choose>
+                </div>
+              </div>
+            </div>
+          </c:forEach>
+        </div>
+      </c:otherwise>
+    </c:choose>
+  </main>
+
+  <footer class="ss-footer">
+    <div class="ss-footer-inner">
+      <div class="ss-footer-brand">Sugandha Sansaar</div>
+      <p class="ss-footer-copy">© 2025 Sugandha Sansaar · Premium Fragrance Destination</p>
+    </div>
+  </footer>
 </div>
-</body>
-</html>
+</body></html>
