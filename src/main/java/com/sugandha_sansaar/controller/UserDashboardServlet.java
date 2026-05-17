@@ -23,8 +23,7 @@ public class UserDashboardServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request,
-                         HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         User loggedUser = (User) SessionUtil.getAttribute(request, "loggedUser");
@@ -32,14 +31,14 @@ public class UserDashboardServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
-
         if (loggedUser.getRoleId() == 1) {
             response.sendRedirect(request.getContextPath() + "/dashboard");
             return;
         }
 
-        // Load products into request so JSP can render "Our Collection"
-        request.setAttribute("products", productDao.getAllProducts());
+        // Load featured products for the dashboard (latest 8 only)
+        request.setAttribute("featuredProducts", productDao.getAllProducts()
+                .stream().limit(8).collect(java.util.stream.Collectors.toList()));
 
         request.getRequestDispatcher("/WEB-INF/views/userDashboard.jsp")
                 .forward(request, response);

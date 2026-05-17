@@ -14,50 +14,39 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-/**
- * Authentication and Authorization filter.
- *
- * CHANGED from original:
- *   - /products and /product-detail are now PUBLIC — no login needed.
- *     Customers can browse the catalogue without an account.
- *   - All /admin/* routes still require roleId == 1.
- *   - All /user/*  routes still require roleId == 2.
- *   - /login and /register remain open as before.
- */
 @WebFilter("/*")
 public class AuthenticationFilter implements Filter {
 
     @Override
-    public void doFilter(ServletRequest request,
-                         ServletResponse response,
-                         FilterChain chain)
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
-        HttpServletRequest  req  = (HttpServletRequest)  request;
-        HttpServletResponse res  = (HttpServletResponse) response;
+        HttpServletRequest  req         = (HttpServletRequest)  request;
+        HttpServletResponse res         = (HttpServletResponse) response;
+        String              path        = req.getRequestURI().substring(req.getContextPath().length());
+        String              contextPath = req.getContextPath();
 
-        String uri         = req.getRequestURI();
-        String contextPath = req.getContextPath();
-        String path        = uri.substring(contextPath.length());
-
-        // 1. Always allow static resources
+        // Always allow static resources
         if (path.startsWith("/static/")) {
             chain.doFilter(request, response);
             return;
         }
 
-        // 2. Public pages — no login required
-        boolean isPublic = "/login".equals(path)
-                || "/register".equals(path)
+        // Public pages — no login needed
+        boolean isPublic = path.equals("/home")
+                || path.equals("/login")
+                || path.equals("/register")
                 || path.equals("/products")
                 || path.startsWith("/products?")
                 || path.equals("/product-detail")
-                || path.startsWith("/product-detail?");
+                || path.startsWith("/product-detail?")
+                || path.isEmpty()
+                || path.equals("/");
 
         User    loggedUser = (User) SessionUtil.getAttribute(req, "loggedUser");
         boolean isLoggedIn = loggedUser != null;
 
-        // 3. Not logged in — allow public, block everything else
+        // Not logged in — only allow public pages, redirect everything else to login
         if (!isLoggedIn) {
             if (isPublic) {
                 chain.doFilter(request, response);
@@ -67,27 +56,26 @@ public class AuthenticationFilter implements Filter {
             return;
         }
 
-        // 4. Already logged in — don't let them back to login/register
-        if ("/login".equals(path) || "/register".equals(path)) {
+        // Logged in — redirect away from login/register only (home is accessible to all)
+        if (path.equals("/login") || path.equals("/register")) {
             res.sendRedirect(loggedUser.getRoleId() == 1
-                    ? contextPath + "/admin/dashboard"
+                    ? contextPath + "/dashboard"
                     : contextPath + "/user/dashboard");
             return;
         }
 
-        // 5. Admin accessing /user/* — redirect to admin dashboard
+        // Admin accessing /user/* → admin dashboard
         if (loggedUser.getRoleId() == 1 && path.startsWith("/user/")) {
-            res.sendRedirect(contextPath + "/admin/dashboard");
+            res.sendRedirect(contextPath + "/dashboard");
             return;
         }
 
-        // 6. Normal user accessing /admin/* — redirect to user dashboard
+        // Normal user accessing /admin/* → user dashboard
         if (loggedUser.getRoleId() == 2 && path.startsWith("/admin/")) {
             res.sendRedirect(contextPath + "/user/dashboard");
             return;
         }
 
-        // 7. All clear
         chain.doFilter(request, response);
     }
 }
