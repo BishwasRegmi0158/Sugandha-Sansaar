@@ -21,8 +21,8 @@ public class PerfumeDaoImpl implements PerfumeDao {
      */
     @Override
     public boolean addPerfume(Perfume perfume) throws SQLException {
-        String sql = "INSERT INTO perfumes (name, brand, category, description, price, stock, " +
-                "image_url, volume, gender, active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO products (category_id, category, name, brand, description, price, stock, " +
+                "image_url, volume, gender, active) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -31,9 +31,9 @@ public class PerfumeDaoImpl implements PerfumeDao {
             conn = DatabaseConnection.getConnection();
             ps = conn.prepareStatement(sql);
 
-            ps.setString(1, perfume.getName());
-            ps.setString(2, perfume.getBrand());
-            ps.setString(3, perfume.getCategory());
+            ps.setString(1, perfume.getCategory());
+            ps.setString(2, perfume.getName());
+            ps.setString(3, perfume.getBrand());
             ps.setString(4, perfume.getDescription());
             ps.setDouble(5, perfume.getPrice());
             ps.setInt(6, perfume.getStock());
@@ -55,7 +55,7 @@ public class PerfumeDaoImpl implements PerfumeDao {
      */
     @Override
     public List<Perfume> getAllPerfumes() throws SQLException {
-        String sql = "SELECT * FROM perfumes ORDER BY id DESC";
+        String sql = "SELECT * FROM products ORDER BY id DESC";
         List<Perfume> list = new ArrayList<>();
 
         Connection conn = null;
@@ -83,7 +83,7 @@ public class PerfumeDaoImpl implements PerfumeDao {
      */
     @Override
     public Perfume getPerfumeById(int id) throws SQLException {
-        String sql = "SELECT * FROM perfumes WHERE id = ?";
+        String sql = "SELECT * FROM products WHERE id = ?";
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -111,9 +111,8 @@ public class PerfumeDaoImpl implements PerfumeDao {
      */
     @Override
     public boolean updatePerfume(Perfume perfume) throws SQLException {
-        String sql = "UPDATE perfumes SET name=?, brand=?, category=?, description=?, " +
+        String sql = "UPDATE products SET category=?, name=?, brand=?, description=?, " +
                 "price=?, stock=?, image_url=?, volume=?, gender=?, active=? WHERE id=?";
-
         Connection conn = null;
         PreparedStatement ps = null;
 
@@ -121,9 +120,9 @@ public class PerfumeDaoImpl implements PerfumeDao {
             conn = DatabaseConnection.getConnection();
             ps = conn.prepareStatement(sql);
 
-            ps.setString(1, perfume.getName());
-            ps.setString(2, perfume.getBrand());
-            ps.setString(3, perfume.getCategory());
+            ps.setString(1, perfume.getCategory());
+            ps.setString(2, perfume.getName());
+            ps.setString(3, perfume.getBrand());
             ps.setString(4, perfume.getDescription());
             ps.setDouble(5, perfume.getPrice());
             ps.setInt(6, perfume.getStock());
@@ -146,7 +145,7 @@ public class PerfumeDaoImpl implements PerfumeDao {
      */
     @Override
     public boolean updateStock(int perfumeId, int newStock) throws SQLException {
-        String sql = "UPDATE perfumes SET stock = ? WHERE id = ?";
+        String sql = "UPDATE products SET stock = ? WHERE id = ?";
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -169,7 +168,7 @@ public class PerfumeDaoImpl implements PerfumeDao {
      */
     @Override
     public boolean deletePerfume(int id) throws SQLException {
-        String sql = "DELETE FROM perfumes WHERE id = ?";
+        String sql = "DELETE FROM products WHERE id = ?";
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -191,7 +190,7 @@ public class PerfumeDaoImpl implements PerfumeDao {
      */
     @Override
     public int getTotalPerfumes() throws SQLException {
-        return countQuery("SELECT COUNT(*) FROM perfumes");
+        return countQuery("SELECT COUNT(*) FROM products");
     }
 
     /**
@@ -199,7 +198,7 @@ public class PerfumeDaoImpl implements PerfumeDao {
      */
     @Override
     public int getOutOfStockCount() throws SQLException {
-        return countQuery("SELECT COUNT(*) FROM perfumes WHERE stock = 0");
+        return countQuery("SELECT COUNT(*) FROM products WHERE stock = 0");
     }
 
     /**
@@ -207,7 +206,7 @@ public class PerfumeDaoImpl implements PerfumeDao {
      */
     @Override
     public int getLowStockCount() throws SQLException {
-        return countQuery("SELECT COUNT(*) FROM perfumes WHERE stock BETWEEN 1 AND 5");
+        return countQuery("SELECT COUNT(*) FROM products WHERE stock BETWEEN 1 AND 5");
     }
 
     /**
@@ -215,7 +214,7 @@ public class PerfumeDaoImpl implements PerfumeDao {
      */
     @Override
     public int getTotalBrands() throws SQLException {
-        return countQuery("SELECT COUNT(DISTINCT brand) FROM perfumes");
+        return countQuery("SELECT COUNT(DISTINCT brand) FROM products");
     }
 
     /**
@@ -223,7 +222,7 @@ public class PerfumeDaoImpl implements PerfumeDao {
      */
     @Override
     public List<String> getAllCategories() throws SQLException {
-        String sql = "SELECT DISTINCT category FROM perfumes ORDER BY category";
+        String sql = "SELECT DISTINCT category FROM products ORDER BY category";
         List<String> categories = new ArrayList<>();
 
         Connection conn = null;
@@ -250,7 +249,7 @@ public class PerfumeDaoImpl implements PerfumeDao {
      */
     @Override
     public List<String> getAllBrands() throws SQLException {
-        String sql = "SELECT DISTINCT brand FROM perfumes ORDER BY brand";
+        String sql = "SELECT DISTINCT brand FROM products ORDER BY brand";
         List<String> brands = new ArrayList<>();
 
         Connection conn = null;
