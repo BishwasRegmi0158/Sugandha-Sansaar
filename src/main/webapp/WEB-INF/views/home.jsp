@@ -11,42 +11,36 @@
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════════════
-     NAVBAR — adapts based on login state
-     ═══════════════════════════════════════════════════════════ -->
+
 <nav class="ss-nav">
     <div class="ss-nav-logo">Sugandha Sansaar</div>
-    <div class="ss-nav-links">
 
-        <!-- Always visible public links -->
+    <div class="ss-nav-search">
+        <form action="${pageContext.request.contextPath}/products" method="GET">
+            <input type="text" name="search"
+                   placeholder="Search for fragrances, brands, or collections..."/>
+            <button type="submit">⌕</button>
+        </form>
+    </div>
+
+    <div class="ss-nav-links">
         <a href="${pageContext.request.contextPath}/home" class="active">HOME</a>
         <a href="${pageContext.request.contextPath}/about">ABOUT US</a>
-
-        <!-- Protected links — filter auto-redirects to /login if not logged in -->
         <a href="${pageContext.request.contextPath}/products">PRODUCT</a>
         <a href="${pageContext.request.contextPath}/user/cart">CART</a>
         <a href="${pageContext.request.contextPath}/user/order">ORDERS</a>
+        <a href="${pageContext.request.contextPath}/user/profile">PROFILE</a>
 
-        <!-- Show PROFILE + LOGOUT if logged in, otherwise show LOGIN -->
         <c:choose>
             <c:when test="${not empty sessionScope.loggedUser}">
-                <a href="${pageContext.request.contextPath}/user/profile">
-                    PROFILE
-                </a>
-                <a href="${pageContext.request.contextPath}/logout" class="nav-cta">
-                    LOGOUT
-                </a>
+                <a href="${pageContext.request.contextPath}/logout" class="nav-cta">LOGOUT</a>
             </c:when>
             <c:otherwise>
-                <a href="${pageContext.request.contextPath}/login" class="nav-cta">
-                    LOGIN
-                </a>
+                <a href="${pageContext.request.contextPath}/login" class="nav-cta">LOGIN</a>
             </c:otherwise>
         </c:choose>
-
     </div>
 </nav>
-
 <div class="page-body">
 
     <!-- ═══════════════════════════════════════════════════════════

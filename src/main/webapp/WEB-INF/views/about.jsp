@@ -206,24 +206,30 @@
     </style>
 </head>
 <body>
-
 <nav class="ss-nav">
     <div class="ss-nav-logo">Sugandha Sansaar</div>
+
+    <div class="ss-nav-search">
+        <form action="${pageContext.request.contextPath}/products" method="GET">
+            <input type="text" name="search"
+                   placeholder="Search for fragrances, brands, or collections..."/>
+            <button type="submit">⌕</button>
+        </form>
+    </div>
+
     <div class="ss-nav-links">
+        <a href="${pageContext.request.contextPath}/home">HOME</a>
+        <a href="${pageContext.request.contextPath}/about" class="active">ABOUT US</a>
+        <a href="${pageContext.request.contextPath}/products">PRODUCT</a>
+        <a href="${pageContext.request.contextPath}/user/cart">CART</a>
+        <a href="${pageContext.request.contextPath}/user/order">ORDERS</a>
+        <a href="${pageContext.request.contextPath}/user/profile">PROFILE</a>
+
         <c:choose>
             <c:when test="${not empty sessionScope.loggedUser}">
-                <a href="${pageContext.request.contextPath}/user/dashboard">HOME</a>
-                <a href="${pageContext.request.contextPath}/products">PRODUCT</a>
-                <a href="${pageContext.request.contextPath}/user/dashboard">MY DASHBOARD</a>
-                <a href="${pageContext.request.contextPath}/about" class="active">ABOUT US</a>
-                <a href="${pageContext.request.contextPath}/user/cart">CART</a>
-                <a href="${pageContext.request.contextPath}/logout">LOGOUT</a>
+                <a href="${pageContext.request.contextPath}/logout" class="nav-cta">LOGOUT</a>
             </c:when>
             <c:otherwise>
-                <a href="${pageContext.request.contextPath}/home">HOME</a>
-                <a href="${pageContext.request.contextPath}/products">PRODUCT</a>
-                <a href="${pageContext.request.contextPath}/about" class="active">ABOUT US</a>
-                <a href="${pageContext.request.contextPath}/login">CART</a>
                 <a href="${pageContext.request.contextPath}/login" class="nav-cta">LOGIN</a>
             </c:otherwise>
         </c:choose>
@@ -286,13 +292,12 @@
 
             <div class="team-card">
                 <div class="team-img">
-                    <%-- Replace src with your own image: static/images/team/roman.jpg --%>
-                        <img src="${pageContext.request.contextPath}/static/images/team/biswas.jpg" alt="Bishwas Regmi"/>
+                    <img src="${pageContext.request.contextPath}/static/images/team/biswas.jpg" alt="Bishwas Regmi"/>
                 </div>
                 <div class="team-body">
                     <p class="team-role">Module 1 — Authentication</p>
                     <h3 class="team-name">Biswas Regmi</h3>
-                    <p class="team-desc">Handles the entire authentication system — user registration, login/logout, password hashing, session &amp; cookie management, email validation, password rules, and role-based redirect for admin and user. This is the foundation of the entire system.</p>
+                    <p class="team-desc">Handles the entire authentication system — user registration, login/logout, password hashing, session &amp; cookie management, email validation, password rules, and role-based redirect for admin and user.</p>
                     <ul class="team-tags">
                         <li>User Registration</li>
                         <li>Login / Logout</li>
@@ -305,13 +310,12 @@
 
             <div class="team-card">
                 <div class="team-img">
-                    <%-- Replace src with your own image: static/images/team/darshan.jpg --%>
                     <img src="${pageContext.request.contextPath}/static/images/team/aman.jpg" alt="Aman Gurung"/>
                 </div>
                 <div class="team-body">
                     <p class="team-role">Module 4 — Admin Dashboard</p>
                     <h3 class="team-name">Aman Gurung</h3>
-                    <p class="team-desc">Manages the full admin dashboard — add, edit, and delete perfumes, manage stock levels, manage categories and brands, and all backend CRUD logic. Ensures admins have full control over the product catalogue.</p>
+                    <p class="team-desc">Manages the full admin dashboard — add, edit, and delete perfumes, manage stock levels, manage categories and brands, and all backend CRUD logic.</p>
                     <ul class="team-tags">
                         <li>Admin Dashboard UI</li>
                         <li>Add / Edit / Delete Perfume</li>
@@ -323,13 +327,12 @@
 
             <div class="team-card">
                 <div class="team-img">
-                    <%-- Replace src with your own image: static/images/team/aman.jpg --%>
-                        <img src="${pageContext.request.contextPath}/static/images/team/roman.jpg" alt="Roman Thapa"/>
+                    <img src="${pageContext.request.contextPath}/static/images/team/roman.jpg" alt="Roman Thapa"/>
                 </div>
                 <div class="team-body">
                     <p class="team-role">Module 3 — Product Browsing</p>
                     <h3 class="team-name">Roman Thapa</h3>
-                    <p class="team-desc">Builds the main user interaction module — displaying all perfumes, the product detail page, search functionality, and filters by category, price, and brand. Fetches all data from the database and handles optional pagination.</p>
+                    <p class="team-desc">Builds the main user interaction module — displaying all perfumes, the product detail page, search functionality, and filters by category, price, and brand.</p>
                     <ul class="team-tags">
                         <li>Product Listing</li>
                         <li>Product Detail Page</li>
@@ -341,31 +344,12 @@
 
             <div class="team-card">
                 <div class="team-img">
-                    <%-- Replace src with your own image: static/images/team/darshan.jpg --%>
-                        <img src="${pageContext.request.contextPath}/static/images/team/aman.jpg" alt="Aman Gurung"/>
-                </div>
-                <div class="team-body">
-                    <p class="team-role">Module 4 — Admin Dashboard</p>
-                    <h3 class="team-name">Aman Gurung</h3>
-                    <p class="team-desc">Manages the full admin dashboard — add, edit, and delete perfumes, manage stock levels, manage categories and brands, and all backend CRUD logic. Ensures admins have full control over the product catalogue.</p>
-                    <ul class="team-tags">
-                        <li>Admin Dashboard UI</li>
-                        <li>Add / Edit / Delete Perfume</li>
-                        <li>Stock Management</li>
-                        <li>Category &amp; Brand CRUD</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="team-card">
-                <div class="team-img">
-                    <%-- Replace src with your own image: static/images/team/bishwas.jpg --%>
                     <img src="${pageContext.request.contextPath}/static/images/team/darshan.jpg" alt="Darshan Gurung"/>
                 </div>
                 <div class="team-body">
                     <p class="team-role">Module 2 — Home &amp; Navigation</p>
                     <h3 class="team-name">Darshan Gurung</h3>
-                    <p class="team-desc">Owns the home page with dynamic featured perfumes, the shared navbar and footer used across all pages, the About page, contact page with backend form submission to the database, and basic routing and navigation throughout the site.</p>
+                    <p class="team-desc">Owns the home page with dynamic featured perfumes, the shared navbar and footer used across all pages, the About page, contact page with backend form submission, and basic routing.</p>
                     <ul class="team-tags">
                         <li>Home Page</li>
                         <li>Navbar &amp; Footer</li>
@@ -377,13 +361,12 @@
 
             <div class="team-card">
                 <div class="team-img">
-                    <%-- Replace src with your own image: static/images/team/sumin.jpg --%>
                     <img src="${pageContext.request.contextPath}/static/images/team/sumin.jpg" alt="Sumin Basnet"/>
                 </div>
                 <div class="team-body">
                     <p class="team-role">Module 5 — Cart &amp; Orders</p>
                     <h3 class="team-name">Sumin Basnet</h3>
-                    <p class="team-desc">Handles all business logic — add to cart, remove from cart, update quantity, wishlist, the full checkout system, placing orders, order history, and total price calculation. This is the commerce engine of the platform.</p>
+                    <p class="team-desc">Handles all business logic — add to cart, remove from cart, update quantity, wishlist, the full checkout system, placing orders, order history, and total price calculation.</p>
                     <ul class="team-tags">
                         <li>Cart &amp; Wishlist</li>
                         <li>Checkout System</li>
@@ -395,13 +378,12 @@
 
             <div class="team-card">
                 <div class="team-img">
-                    <%-- Replace src with your own image: static/images/team/samundra.jpg --%>
                     <img src="${pageContext.request.contextPath}/static/images/team/samundra.jpg" alt="Samundra Shahi"/>
                 </div>
                 <div class="team-body">
                     <p class="team-role">Module 6 — Database &amp; Integration</p>
                     <h3 class="team-name">Samundra Shahi</h3>
-                    <p class="team-desc">Designs the full database — tables, relationships, SQL schema, and ER diagram. Connects the database with all modules, fixes integration issues across the system, debugs errors, and ensures the entire platform runs smoothly end to end.</p>
+                    <p class="team-desc">Designs the full database — tables, relationships, SQL schema, and ER diagram. Connects the database with all modules, fixes integration issues, and ensures the entire platform runs smoothly.</p>
                     <ul class="team-tags">
                         <li>Database Design</li>
                         <li>SQL Schema &amp; ER Diagram</li>
