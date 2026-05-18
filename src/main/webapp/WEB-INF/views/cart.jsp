@@ -19,7 +19,7 @@
     </form>
   </div>
   <div class="ss-nav-links">
-    <a href="${pageContext.request.contextPath}/products">Home</a>
+    <a href="${pageContext.request.contextPath}/home">Home</a>
     <a href="${pageContext.request.contextPath}/products">Product</a>
     <a href="${pageContext.request.contextPath}/about">About</a>
     <a href="${pageContext.request.contextPath}/user/cart" class="active">

@@ -40,7 +40,19 @@ public class AuthenticationFilter implements Filter {
         User loggedUser = (User) SessionUtil.getAttribute(req, "loggedUser");
         boolean isLoggedIn = loggedUser != null;
 
-        // Pages that do not require login
+        // Pages that do not require login at all (fully public)
+        boolean isPublicPage = "/home".equals(path)
+                || "/about".equals(path)
+                || "/".equals(path)
+                || path.isEmpty();
+
+        // If it's a public page, just let it through regardless of login state
+        if (isPublicPage) {
+            chain.doFilter(request, response);
+            return;
+        }
+
+        // Pages that are only for guests (logged-out users)
         boolean isAuthPage = "/login".equals(path) || "/register".equals(path);
 
         // If not logged in and trying to access a protected page → redirect to login

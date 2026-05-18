@@ -37,7 +37,7 @@
             <c:when test="${not empty product.imageUrl}">
               <img src="${pageContext.request.contextPath}/static/images/product_images/${product.imageUrl}" alt="${product.name}" onerror="this.parentElement.innerHTML='<div class=\'detail-img-placeholder\'>🌸</div>'"/>
             </c:when>
-            <c:otherwise><div class="detail-img-placeholder">🌸</div></c:otherwise>
+            <c:otherwise><div class="detail-img-placeholder"></div></c:otherwise>
           </c:choose>
           <c:if test="${not product.inStock}"><div class="oos-overlay">Out of Stock</div></c:if>
         </div>
@@ -112,7 +112,7 @@
               <div class="card-img">
                 <c:choose>
                   <c:when test="${not empty r.imageUrl}"><img src="${pageContext.request.contextPath}/static/images/product_images/${r.imageUrl}" alt="${r.name}"/></c:when>
-                  <c:otherwise><div class="img-ph">🌸</div></c:otherwise>
+                  <c:otherwise><div class="img-ph"></div></c:otherwise>
                 </c:choose>
               </div>
               <div class="card-body">

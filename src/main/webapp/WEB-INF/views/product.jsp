@@ -18,7 +18,7 @@
     </form>
   </div>
   <div class="ss-nav-links">
-    <a href="${pageContext.request.contextPath}/products">HOME</a>
+    <a href="${pageContext.request.contextPath}/home">HOME</a>
     <a href="${pageContext.request.contextPath}/products" class="active">PRODUCT</a>
     <a href="${pageContext.request.contextPath}/about">ABOUT US</a>
     <a href="${pageContext.request.contextPath}/user/cart">CART</a>
@@ -85,7 +85,7 @@
                   <c:when test="${not empty p.imageUrl}">
                     <img src="${pageContext.request.contextPath}/static/images/product_images/${p.imageUrl}" alt="${p.name}" onerror="this.parentElement.innerHTML='<div class=\'img-ph\'>🌸</div>'"/>
                   </c:when>
-                  <c:otherwise><div class="img-ph">🌸</div></c:otherwise>
+                  <c:otherwise><div class="img-ph"></div></c:otherwise>
                 </c:choose>
                 <c:if test="${not empty p.categoryName}"><span class="card-badge">${p.categoryName}</span></c:if>
                 <c:if test="${not p.inStock}"><div class="oos-overlay">Out of Stock</div></c:if>
