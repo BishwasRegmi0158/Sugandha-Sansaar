@@ -235,7 +235,6 @@
         </c:choose>
     </div>
 </nav>
-
 <div class="page-body">
 
     <!-- Hero -->

@@ -66,16 +66,6 @@ CREATE TABLE users (
 -- session_token is a unique hash generated at login time
 -- Deleted automatically when user is deleted (CASCADE)
 -- ============================================================
-CREATE TABLE sessions (
-                          id            INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                          session_token VARCHAR(128) NOT NULL UNIQUE,
-                          user_id       INT          NOT NULL,
-                          expires_at    DATETIME     NOT NULL,
-                          created_at    TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
-                          FOREIGN KEY (user_id) REFERENCES users(id)  --  FK
-                              ON UPDATE CASCADE
-                              ON DELETE CASCADE
-);
 
 -- ============================================================
 -- 4. Categories — lookup table for product categories
@@ -117,16 +107,6 @@ CREATE TABLE products (
 -- 6. Product Images — multiple images per product
 -- sort_order: 1 = main cover image, 2+ = additional views
 -- ============================================================
-CREATE TABLE product_images (
-                                id         INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                                product_id INT          NOT NULL,
-                                image_url  VARCHAR(500) NOT NULL,
-                                sort_order INT          NOT NULL DEFAULT 1,
-                                created_at TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
-                                FOREIGN KEY (product_id) REFERENCES products(id)  --  FK
-                                    ON UPDATE CASCADE
-                                    ON DELETE CASCADE
-);
 
 -- ============================================================
 -- 7. Cart — one cart per user
