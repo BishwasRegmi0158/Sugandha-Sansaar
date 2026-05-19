@@ -254,4 +254,24 @@ public class UserDaoImpl implements UserDao {
         }
         return users;
     }
+
+    @Override
+    public int getTotalUsers() throws SQLException {
+        String sql = "SELECT COUNT(*) FROM users";
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            conn = DatabaseConnection.getConnection();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            if (rs.next()) return rs.getInt(1);
+        } finally {
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
+            DatabaseConnection.closeConnection(conn);
+        }
+        return 0;
+    }
+
 }

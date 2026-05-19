@@ -62,7 +62,13 @@
               <tr><td>Category</td><td>${product.categoryName}</td></tr>
             </c:if>
             <c:if test="${not empty product.gender}">
-              <tr><td>For</td><td>${product.gender == 'male' ? 'Men' : 'Women'}</td></tr>
+              <tr><td>For</td><td>
+                <c:choose>
+                  <c:when test="${product.gender == 'Male'}">Men</c:when>
+                  <c:when test="${product.gender == 'Female'}">Women</c:when>
+                  <c:otherwise>Unisex</c:otherwise>
+                </c:choose>
+              </td></tr>
             </c:if>
             <c:if test="${product.volume != null}">
               <tr><td>Volume</td><td>${product.volume} ml</td></tr>
