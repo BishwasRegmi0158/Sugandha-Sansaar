@@ -29,6 +29,9 @@
             <a href="${pageContext.request.contextPath}/admin/users" class="nav-link">
                 👤 Manage Users
             </a>
+            <a href="${pageContext.request.contextPath}/admin/orders" class="nav-link">
+                📦 Manage Orders
+            </a>
             <a href="${pageContext.request.contextPath}/logout" class="nav-link nav-logout">
                 🚪 Logout
             </a>
@@ -75,8 +78,8 @@
                         <input type="text" id="category" name="category" value="${perfume.category}"
                                required maxlength="50" list="categorySuggestions">
                         <datalist id="categorySuggestions">
-                            <c:forEach var="cat" items="${categories}">
-                                <option value="${cat}"/>
+                            <c:forEach var="c" items="${categories}">
+                                <option value="${c}"/>
                             </c:forEach>
                         </datalist>
                     </div>
@@ -92,7 +95,7 @@
 
                     <div class="form-group">
                         <label for="price">Price (Rs.) <span class="required">*</span></label>
-                        <input type="number" id="price" name="price" step="0.01" min="0.01"
+                        <input type="number" id="price" name="price" step="0.01" min="1.00"
                                value="${perfume.price}" required>
                     </div>
 
@@ -111,8 +114,8 @@
                     <div class="form-group">
                         <label for="imageUrl">Image Path</label>
                         <input type="text" id="imageUrl" name="imageUrl" value="${perfume.imageUrl}"
-                               placeholder="images/perfumes/rose.jpg">
-                        <small>Relative path from webapp root</small>
+                               placeholder="e.g. chanel.jpg">
+                        <small>Just the image name</small>
                     </div>
 
                     <div class="form-group form-group-full">

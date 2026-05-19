@@ -160,7 +160,12 @@
 
                 <div class="card-meta">
                   <c:if test="${not empty p.gender}">
-                    <span>${p.gender == 'male' ? 'Men' : 'Women'}</span>
+                    <span>
+                      <c:choose>
+                         <c:when test="${p.gender == 'Male'}">Men</c:when>
+                         <c:when test="${p.gender == 'Female'}">Women</c:when>
+                         <c:otherwise>Unisex</c:otherwise>
+                       </c:choose>                    </span>
                   </c:if>
                   <c:if test="${p.volume != null}">
                     <span>${p.volume}ml</span>

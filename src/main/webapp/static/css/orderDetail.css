@@ -90,7 +90,7 @@
     font-family: 'Cormorant Garamond', serif;
     font-size: clamp(1.7rem, 3vw, 2.3rem);
     font-weight: 300;
-    color: #2a1f14;
+    color: #ffffff;
     letter-spacing: 0.03em;
     margin: 0;
     line-height: 1;
@@ -155,39 +155,60 @@
 }
 
 /* ── Items ───────────────────────────────────────────────────────── */
-.od-items-list { display: flex; flex-direction: column; }
+.od-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
 
 .od-item {
-    display: grid;
-    grid-template-columns: 52px 1fr auto;
+    display: flex;
+    flex-direction: row;
     align-items: center;
-    gap: 1rem;
-    padding: 0.9rem 0;
+    gap: 1.2rem;
+    padding: 1rem 0;
     border-bottom: 1px solid #ede5d8;
 }
 .od-item:first-child { padding-top: 0; }
 .od-item:last-child  { border-bottom: none; padding-bottom: 0; }
 
-/* Image — locked to 52 × 52, never grows */
+/* Image — 110×110 square, locked, never stretches */
 .od-item-img {
-    width: 52px;
-    height: 52px;
-    min-width: 52px;
-    max-width: 52px;
-    flex-shrink: 0;
-    border-radius: 7px;
+    flex: 0 0 110px;
+    width: 110px;
+    height: 110px;
+    border-radius: 8px;
     overflow: hidden;
     background: #ede5d8;
 }
 .od-item-img img {
-    width: 56px !important;
-    height: 56px !important;
-    max-width: 56px !important;
-    min-width: 56px !important;
-    object-fit: cover;
-    display: block;
+    display: block !important;
+    width: 110px !important;
+    height: 110px !important;
+    min-width: 110px !important;
+    max-width: 110px !important;
+    max-height: 110px !important;
+    object-fit: cover !important;
+    object-position: center !important;
 }
-.od-item-info { min-width: 0; }
+
+/* Info takes remaining space */
+.od-item-info {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+/* Price pinned to the right */
+.od-item-line {
+    flex: 0 0 auto;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #2a1f14;
+    white-space: nowrap;
+    text-align: right;
+    margin: 0;
+}
 
 .od-item-name {
     font-family: 'Jost', sans-serif;
@@ -209,16 +230,6 @@
     font-family: 'Jost', sans-serif;
     font-size: 0.77rem;
     color: #7a6a58;
-    margin: 0;
-}
-
-.od-item-line {
-    font-family: 'Jost', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #2a1f14;
-    white-space: nowrap;
-    text-align: right;
     margin: 0;
 }
 
@@ -368,13 +379,19 @@
 @media (max-width: 480px) {
     .order-detail-page { padding: 1.6rem 1rem 4rem; }
     .od-section        { padding: 1.1rem 1rem; }
-    .od-item           { grid-template-columns: 44px 1fr auto; gap: 0.7rem; }
 
-    .od-item-img,
+    .od-item           { gap: 0.8rem; }
+
+    .od-item-img {
+        flex: 0 0 80px;
+        width: 80px !important;
+        height: 80px !important;
+    }
     .od-item-img img {
-        width: 44px !important;
-        height: 44px !important;
-        min-width: 44px !important;
-        max-width: 44px !important;
+        width: 80px !important;
+        height: 80px !important;
+        min-width: 80px !important;
+        max-width: 80px !important;
+        max-height: 80px !important;
     }
 }

@@ -78,6 +78,7 @@
                 <div class="od-item-img">
                   <img src="${pageContext.request.contextPath}/static/images/product_images/${item.productImageUrl}"
                        alt="<c:out value='${item.productName}' />"
+                       style="width:110px;height:110px;min-width:110px;max-width:110px;max-height:110px;object-fit:cover;display:block;"
                        onerror="this.style.visibility='hidden'" />
                 </div>
                 <div class="od-item-info">

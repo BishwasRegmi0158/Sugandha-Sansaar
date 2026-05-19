@@ -29,6 +29,9 @@
       <a href="${pageContext.request.contextPath}/admin/users" class="nav-link">
         👤 Manage Users
       </a>
+      <a href="${pageContext.request.contextPath}/admin/orders" class="nav-link">
+        📦 Manage Orders
+      </a>
       <a href="${pageContext.request.contextPath}/logout" class="nav-link nav-logout">
         🚪 Logout
       </a>
@@ -57,7 +60,7 @@
             <label for="name">Perfume Name <span class="required">*</span></label>
             <input type="text" id="name" name="name"
                    value="${not empty perfume ? perfume.name : ''}"
-                   placeholder="e.g. Midnight Rose" required maxlength="100">
+                   placeholder="e.g. Bleu De Chanel" required maxlength="100">
           </div>
 
           <%-- Brand --%>
@@ -79,18 +82,12 @@
             <label for="category">Category <span class="required">*</span></label>
             <input type="text" id="category" name="category"
                    value="${not empty perfume ? perfume.category : ''}"
-                   placeholder="e.g. Floral" required maxlength="50"
+                   placeholder="e.g. Body Spray" required maxlength="50"
                    list="categorySuggestions">
             <datalist id="categorySuggestions">
               <c:forEach var="c" items="${categories}">
                 <option value="${c}"/>
               </c:forEach>
-              <option value="Floral"/>
-              <option value="Woody"/>
-              <option value="Oriental"/>
-              <option value="Fresh"/>
-              <option value="Aquatic"/>
-              <option value="Citrus"/>
             </datalist>
           </div>
 
@@ -98,7 +95,7 @@
           <div class="form-group">
             <label for="gender">Gender <span class="required">*</span></label>
             <select id="gender" name="gender" required>
-              <option value="">-- Select --</option>
+              <option value="">  Select  </option>
               <option value="Male"   ${perfume.gender == 'Male'   ? 'selected' : ''}>Male</option>
               <option value="Female" ${perfume.gender == 'Female' ? 'selected' : ''}>Female</option>
               <option value="Unisex" ${perfume.gender == 'Unisex' ? 'selected' : ''}>Unisex</option>
@@ -134,8 +131,8 @@
             <label for="imageUrl">Image Path</label>
             <input type="text" id="imageUrl" name="imageUrl"
                    value="${not empty perfume ? perfume.imageUrl : ''}"
-                   placeholder="images/perfumes/rose.jpg">
-            <small>Relative path from webapp root</small>
+                   placeholder="e.g. chanel.jpg">
+            <small>Just the image name</small>
           </div>
 
           <%-- Active Status --%>

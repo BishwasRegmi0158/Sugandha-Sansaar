@@ -31,6 +31,9 @@
       <a href="${pageContext.request.contextPath}/admin/users" class="nav-link">
         👤 Manage Users
       </a>
+      <a href="${pageContext.request.contextPath}/admin/orders" class="nav-link">
+        📦 Manage Orders
+      </a>
       <a href="${pageContext.request.contextPath}/logout" class="nav-link nav-logout">
         🚪 Logout
       </a>
@@ -86,7 +89,7 @@
                 <td>
                   <c:choose>
                     <c:when test="${not empty p.imageUrl}">
-                      <img src="${pageContext.request.contextPath}/${p.imageUrl}"
+                      <img src="${pageContext.request.contextPath}/static/images/product_images/${p.imageUrl}"
                            alt="${p.name}" class="product-thumb">
                     </c:when>
                     <c:otherwise>
@@ -98,7 +101,7 @@
                 <td>${p.brand}</td>
                 <td>${p.category}</td>
                 <td>Rs. <fmt:formatNumber value="${p.price}" pattern="#,##0.00"/></td>
-                <td>${p.volume}</td>
+                <td><fmt:formatNumber value="${p.volume}" pattern="#,##0.##"/>ml</td>
                 <td>
                   <c:choose>
                     <c:when test="${p.stock == 0}">
@@ -123,31 +126,30 @@
                     </c:otherwise>
                   </c:choose>
                 </td>
-                <td class="action-cell">
-                    <%-- Edit Button --%>
-                  <a href="${pageContext.request.contextPath}/admin/perfumes?action=edit&id=${p.id}"
-                     class="btn-edit">Edit</a>
+                <td>
+                  <div class="action-cell">
+                    <a href="${pageContext.request.contextPath}/admin/perfumes?action=edit&id=${p.id}"
+                       class="btn-edit">Edit</a>
 
-                    <%-- Update Stock Form (inline) --%>
-                  <form method="post"
-                        action="${pageContext.request.contextPath}/admin/perfumes"
-                        class="inline-form">
-                    <input type="hidden" name="action" value="updateStock">
-                    <input type="hidden" name="id" value="${p.id}">
-                    <input type="number" name="stock" value="${p.stock}"
-                           min="0" class="stock-input" required>
-                    <button type="submit" class="btn-stock">Update Stock</button>
-                  </form>
+                    <form method="post"
+                          action="${pageContext.request.contextPath}/admin/perfumes"
+                          class="inline-form">
+                      <input type="hidden" name="action" value="updateStock">
+                      <input type="hidden" name="id" value="${p.id}">
+                      <input type="number" name="stock" value="${p.stock}"
+                             min="0" class="stock-input" required>
+                      <button type="submit" class="btn-stock">Update Stock</button>
+                    </form>
 
-                    <%-- Delete Form --%>
-                  <form method="post"
-                        action="${pageContext.request.contextPath}/admin/perfumes"
-                        class="inline-form"
-                        onsubmit="return confirmDelete('${p.name}');">
-                    <input type="hidden" name="action" value="delete">
-                    <input type="hidden" name="id"     value="${p.id}">
-                    <button type="submit" class="btn-delete">Delete</button>
-                  </form>
+                    <form method="post"
+                          action="${pageContext.request.contextPath}/admin/perfumes"
+                          class="inline-form"
+                          onsubmit="return confirmDelete('${p.name}');">
+                      <input type="hidden" name="action" value="delete">
+                      <input type="hidden" name="id" value="${p.id}">
+                      <button type="submit" class="btn-delete">Delete</button>
+                    </form>
+                  </div>
                 </td>
               </tr>
             </c:forEach>

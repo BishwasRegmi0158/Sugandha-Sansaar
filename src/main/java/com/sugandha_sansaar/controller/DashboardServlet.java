@@ -1,12 +1,11 @@
 package com.sugandha_sansaar.controller;
 
 import com.sugandha_sansaar.model.User;
-
-
-
 import com.sugandha_sansaar.service.PerfumeService;
 import com.sugandha_sansaar.dao.UserDao;
 import com.sugandha_sansaar.dao.UserDaoImpl;
+import com.sugandha_sansaar.dao.OrderDao;
+import com.sugandha_sansaar.dao.OrderDaoImpl;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -31,18 +30,19 @@ public class DashboardServlet extends HttpServlet {
 
     private PerfumeService perfumeService;
     private UserDao userDao;
+    private OrderDao orderDao;
 
     @Override
     public void init() {
         perfumeService = new PerfumeService();
-        userDao = new UserDaoImpl();
+        userDao        = new UserDaoImpl();
+        orderDao       = new OrderDaoImpl();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Role check: only ADMIN users can access
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect(request.getContextPath() + "/login");
@@ -54,7 +54,6 @@ public class DashboardServlet extends HttpServlet {
             return;
         }
 
-        //  Load dashboard statistics
         try {
             request.setAttribute("totalPerfumes",  perfumeService.getTotalPerfumes());
             request.setAttribute("outOfStock",      perfumeService.getOutOfStockCount());
@@ -62,6 +61,8 @@ public class DashboardServlet extends HttpServlet {
             request.setAttribute("totalBrands",     perfumeService.getTotalBrands());
             request.setAttribute("recentPerfumes",  perfumeService.getAllPerfumes());
             request.setAttribute("totalUsers",      userDao.getTotalUsers());
+            request.setAttribute("totalOrders",     orderDao.getTotalOrders());
+            request.setAttribute("pendingOrders",   orderDao.getPendingOrders());
 
         } catch (SQLException e) {
             System.err.println("AdminDashboardController error: " + e.getMessage());

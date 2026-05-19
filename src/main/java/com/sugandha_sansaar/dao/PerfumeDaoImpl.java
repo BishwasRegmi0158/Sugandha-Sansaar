@@ -222,7 +222,7 @@ public class PerfumeDaoImpl implements PerfumeDao {
      */
     @Override
     public List<String> getAllCategories() throws SQLException {
-        String sql = "SELECT DISTINCT category FROM products ORDER BY category";
+        String sql = "SELECT name FROM categories ORDER BY name";
         List<String> categories = new ArrayList<>();
 
         Connection conn = null;
@@ -234,7 +234,7 @@ public class PerfumeDaoImpl implements PerfumeDao {
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
-                categories.add(rs.getString("category"));
+                categories.add(rs.getString("name"));
             }
         } finally {
             if (rs != null) rs.close();
