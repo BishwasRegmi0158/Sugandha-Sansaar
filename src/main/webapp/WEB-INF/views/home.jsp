@@ -15,9 +15,9 @@
     <div class="ss-nav-logo">Sugandha Sansaar</div>
     <div class="ss-nav-links">
         <a href="${pageContext.request.contextPath}/home" class="active">HOME</a>
-        <a href="${pageContext.request.contextPath}/products">PRODUCT</a>
+        <a href="${pageContext.request.contextPath}/login">PRODUCT</a>
         <a href="${pageContext.request.contextPath}/login">MY DASHBOARD</a>
-        <a href="${pageContext.request.contextPath}/login">ABOUT US</a>
+        <a href="${pageContext.request.contextPath}/about">ABOUT US</a>
         <a href="${pageContext.request.contextPath}/login">CART</a>
         <a href="${pageContext.request.contextPath}/login" class="nav-cta">LOGIN</a>
     </div>
@@ -38,8 +38,8 @@
             <h1 class="hero-title">Sugandha Sansaar</h1>
             <p class="hero-desc">Discover your signature scent. Luxury perfumes crafted for elegance and allure.</p>
             <div class="hero-btns">
-                <a href="${pageContext.request.contextPath}/register" class="btn-gold">Shop Collection</a>
-                <a href="${pageContext.request.contextPath}/login" class="btn-outline">Our Story</a>
+                <a href="${pageContext.request.contextPath}/products" class="btn-gold">Shop Collection</a>
+                <a href="${pageContext.request.contextPath}/register" class="btn-outline">Join Now — It's Free</a>
             </div>
         </div>
     </section>
@@ -64,7 +64,7 @@
                     <div class="highlight-body">
                         <h3 class="highlight-name">${p.name}</h3>
                         <p class="highlight-price">${p.formattedPrice}</p>
-                        <a href="${pageContext.request.contextPath}/login" class="highlight-btn">View Details</a>
+                        <a href="${pageContext.request.contextPath}/products" class="highlight-btn">View Details</a>
                     </div>
                 </div>
             </c:forEach>
@@ -72,15 +72,15 @@
             <c:if test="${empty featuredProducts}">
                 <div class="highlight-card">
                     <div class="highlight-img"><div class="highlight-img-ph">🌸</div></div>
-                    <div class="highlight-body"><h3 class="highlight-name">Midnight Noir</h3><p class="highlight-price">Rs. 1,200</p><a href="${pageContext.request.contextPath}/login" class="highlight-btn">View Details</a></div>
+                    <div class="highlight-body"><h3 class="highlight-name">Midnight Noir</h3><p class="highlight-price">Rs. 1,200</p><a href="${pageContext.request.contextPath}/products" class="highlight-btn">View Details</a></div>
                 </div>
                 <div class="highlight-card">
                     <div class="highlight-img"><div class="highlight-img-ph">🌺</div></div>
-                    <div class="highlight-body"><h3 class="highlight-name">Rose Whisper</h3><p class="highlight-price">Rs. 950</p><a href="${pageContext.request.contextPath}/login" class="highlight-btn">View Details</a></div>
+                    <div class="highlight-body"><h3 class="highlight-name">Rose Whisper</h3><p class="highlight-price">Rs. 950</p><a href="${pageContext.request.contextPath}/products" class="highlight-btn">View Details</a></div>
                 </div>
                 <div class="highlight-card">
                     <div class="highlight-img"><div class="highlight-img-ph">✨</div></div>
-                    <div class="highlight-body"><h3 class="highlight-name">Obsidian Essence</h3><p class="highlight-price">Rs. 1,450</p><a href="${pageContext.request.contextPath}/login" class="highlight-btn">View Details</a></div>
+                    <div class="highlight-body"><h3 class="highlight-name">Obsidian Essence</h3><p class="highlight-price">Rs. 1,450</p><a href="${pageContext.request.contextPath}/products" class="highlight-btn">View Details</a></div>
                 </div>
             </c:if>
         </div>
@@ -92,7 +92,7 @@
         <p>Create a free account to browse our full collection, add to cart and order.</p>
         <div class="hero-btns">
             <a href="${pageContext.request.contextPath}/register" class="btn-gold">Register Free</a>
-            <a href="${pageContext.request.contextPath}/login" class="btn-outline">I have an account</a>
+            <a href="${pageContext.request.contextPath}/about" class="btn-outline">Our Story</a>
         </div>
     </section>
 
@@ -100,10 +100,6 @@
         <div class="ss-footer-inner">
             <div class="ss-footer-brand">Sugandha Sansaar</div>
             <p class="ss-footer-copy">© 2025 Sugandha Sansaar · Premium Fragrance Destination</p>
-            <div class="ss-footer-links">
-                <a href="${pageContext.request.contextPath}/login">Login</a>
-                <a href="${pageContext.request.contextPath}/register">Register</a>
-            </div>
         </div>
     </footer>
 </div>

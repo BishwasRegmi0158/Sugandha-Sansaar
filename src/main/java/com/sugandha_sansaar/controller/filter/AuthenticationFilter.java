@@ -36,10 +36,7 @@ public class AuthenticationFilter implements Filter {
         boolean isPublic = path.equals("/home")
                 || path.equals("/login")
                 || path.equals("/register")
-                || path.equals("/products")
-                || path.startsWith("/products?")
-                || path.equals("/product-detail")
-                || path.startsWith("/product-detail?")
+                || path.equals("/about")
                 || path.isEmpty()
                 || path.equals("/");
 

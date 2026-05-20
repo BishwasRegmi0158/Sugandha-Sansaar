@@ -21,6 +21,7 @@
         <a href="${pageContext.request.contextPath}/user/dashboard">HOME</a>
         <a href="${pageContext.request.contextPath}/products" class="active">PRODUCT</a>
         <a href="${pageContext.request.contextPath}/user/dashboard">MY DASHBOARD</a>
+        <a href="${pageContext.request.contextPath}/about">ABOUT US</a>
         <a href="${pageContext.request.contextPath}/user/cart">CART</a>
         <a href="${pageContext.request.contextPath}/logout">LOGOUT</a>
     </div>
@@ -95,19 +96,7 @@
                                 </div>
                                 <div class="card-footer">
                                     <span class="card-price">${p.formattedPrice}</span>
-                                    <c:choose>
-                                        <c:when test="${p.inStock}">
-                                            <form action="${pageContext.request.contextPath}/user/cart" method="post" style="margin:0;">
-                                                <input type="hidden" name="productId" value="${p.id}"/>
-                                                <input type="hidden" name="action" value="add"/>
-                                                <input type="hidden" name="quantity" value="1"/>
-                                                <button type="submit" class="btn-add-cart">Add to Cart</button>
-                                            </form>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <a href="${pageContext.request.contextPath}/product-detail?id=${p.id}" class="btn-ghost">View →</a>
-                                        </c:otherwise>
-                                    </c:choose>
+                                    <a href="${pageContext.request.contextPath}/product-detail?id=${p.id}" class="btn-ghost">VIEW →</a>
                                 </div>
                             </div>
                         </div>
