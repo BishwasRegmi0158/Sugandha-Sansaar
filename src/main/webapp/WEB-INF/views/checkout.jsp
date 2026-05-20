@@ -219,16 +219,7 @@
     </div><%-- /.checkout-layout --%>
   </div><%-- /.checkout-page --%>
 
-  <footer class="ss-footer">
-    <div class="ss-footer-inner">
-      <div class="ss-footer-brand">Sugandha Sansaar</div>
-      <p class="ss-footer-copy">© 2025 Sugandha Sansaar · Premium Fragrance Destination</p>
-      <div class="ss-footer-links">
-        <a href="${pageContext.request.contextPath}/about">About</a>
-        <a href="${pageContext.request.contextPath}/products">Shop</a>
-      </div>
-    </div>
-  </footer>
+  <jsp:include page="/WEB-INF/templates/footer.jsp"/>
 </div>
 
 <script>

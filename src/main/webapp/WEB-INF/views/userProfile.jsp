@@ -256,6 +256,7 @@
         el.textContent = '✗ ' + msg;
         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
+    <jsp:include page="/WEB-INF/templates/footer.jsp"/>
 </script>
 
 </body>

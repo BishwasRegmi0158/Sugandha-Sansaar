@@ -13,6 +13,7 @@
   <%-- Base design system — ALWAYS loaded --%>
   <link rel="stylesheet"
         href="${pageContext.request.contextPath}/static/css/aura.css" />
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/footer.css" />
 
   <%-- Page-specific CSS — loaded only if provided --%>
   <c:if test="${not empty param.cssFile}">

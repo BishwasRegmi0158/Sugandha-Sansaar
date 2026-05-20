@@ -191,14 +191,7 @@
     <!-- ═══════════════════════════════════════════════════════════
          FOOTER
          ═══════════════════════════════════════════════════════════ -->
-    <footer class="ss-footer">
-        <div class="ss-footer-inner">
-            <div class="ss-footer-brand">Sugandha Sansaar</div>
-            <p class="ss-footer-copy">
-                © 2025 Sugandha Sansaar · Premium Fragrance Destination
-            </p>
-        </div>
-    </footer>
+    <jsp:include page="/WEB-INF/templates/footer.jsp"/>
 
 </div>
 </body>
