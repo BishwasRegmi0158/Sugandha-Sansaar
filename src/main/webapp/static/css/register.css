@@ -1,26 +1,31 @@
-/* ============================================
-   Sugandha Sansaar - Registration CSS
-   ============================================ */
+/* ============================================================
+   Sugandha Sansaar - Register CSS (Same as Login Style)
+   ============================================================ */
 
+/* ---------- Global Reset ---------- */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* ---------- Body ---------- */
 body {
     font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    /* Attractive dark background – deep space gradient */
-    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    background:
+            radial-gradient(circle at top left, #312e81 0%, transparent 30%),
+            radial-gradient(circle at bottom right, #581c87 0%, transparent 30%),
+            linear-gradient(135deg, #050505, #0f172a, #111827);
     background-attachment: fixed;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
+    overflow: hidden;
 }
 
-/* ---------- Main Register Container ---------- */
+/* ---------- Main Container ---------- */
 .register-page {
     width: 100%;
     max-width: 500px;
@@ -28,7 +33,7 @@ body {
     animation: fadeInUp 0.6s ease-out;
 }
 
-/* ---------- Header with Logo (text stays white on dark bg) ---------- */
+/* ---------- Header ---------- */
 .register-header {
     text-align: center;
     margin-bottom: 30px;
@@ -38,7 +43,7 @@ body {
     width: 80px;
     height: 80px;
     object-fit: contain;
-    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2));
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
     transition: transform 0.3s ease;
 }
 
@@ -51,32 +56,36 @@ body {
     font-size: 2rem;
     margin-top: 12px;
     letter-spacing: 1px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-    font-weight: 600;
+    font-weight: 700;
 }
 
-/* ---------- Form Card (light) ---------- */
+/* ---------- Register Form ---------- */
 .register-form {
-    background: rgba(255, 255, 255, 0.96);
-    backdrop-filter: blur(2px);
+    background: rgba(15, 15, 15, 0.85);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 28px;
     padding: 40px 35px;
-    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.4);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow:
+            0 25px 45px rgba(0, 0, 0, 0.6),
+            0 0 20px rgba(107, 78, 158, 0.15);
+    transition: all 0.3s ease;
 }
 
 .register-form:hover {
     transform: translateY(-4px);
-    box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5);
+    box-shadow:
+            0 30px 50px rgba(0, 0, 0, 0.7),
+            0 0 30px rgba(107, 78, 158, 0.2);
 }
 
+/* ---------- Heading ---------- */
 .register-form h2 {
     text-align: center;
     margin-bottom: 30px;
-    color: #1e2a47;
+    color: #ffffff;
     font-weight: 700;
     font-size: 1.9rem;
-    letter-spacing: -0.5px;
     position: relative;
 }
 
@@ -85,54 +94,65 @@ body {
     display: block;
     width: 70px;
     height: 4px;
-    background: linear-gradient(90deg, #2a5298, #6b4e9e);
+    background: linear-gradient(90deg, #6366f1, #8b5cf6);
     margin: 12px auto 0;
     border-radius: 4px;
 }
 
-/* ---------- Input Fields ---------- */
+/* ---------- Inputs ---------- */
 .register-form input {
     width: 100%;
     padding: 14px 18px;
     margin-bottom: 20px;
-    border: 2px solid #e2e8f0;
+    border: 1px solid rgba(255,255,255,0.08);
     border-radius: 16px;
     font-size: 1rem;
     transition: all 0.3s ease;
-    background: #f9fafc;
+    background: rgba(255,255,255,0.05);
+    color: white;
     font-family: inherit;
     outline: none;
 }
 
 .register-form input:focus {
-    border-color: #6b4e9e;
-    background: white;
-    box-shadow: 0 0 0 4px rgba(107, 78, 158, 0.15);
+    border-color: #8b5cf6;
+    background: rgba(255,255,255,0.08);
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.18);
 }
 
 .register-form input::placeholder {
     color: #94a3b8;
-    font-weight: 500;
 }
 
 /* ---------- Error Message ---------- */
 .error {
-    background: #fee2e2;
-    color: #b91c1c;
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
     padding: 12px 18px;
     border-radius: 16px;
     font-size: 0.9rem;
     margin-bottom: 22px;
-    border-left: 5px solid #b91c1c;
-    font-weight: 500;
+    border-left: 5px solid #ef4444;
     animation: shake 0.4s ease;
 }
 
-/* ---------- Register Button ---------- */
+/* ---------- Success Message ---------- */
+.success {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+    padding: 12px 18px;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    margin-bottom: 22px;
+    border-left: 5px solid #22c55e;
+    animation: fadeInUp 0.4s ease;
+}
+
+/* ---------- Button ---------- */
 .register-form button {
     width: 100%;
     padding: 15px;
-    background: linear-gradient(90deg, #2a5298, #6b4e9e);
+    background: linear-gradient(90deg, #6366f1, #8b5cf6);
     color: white;
     border: none;
     border-radius: 40px;
@@ -142,36 +162,36 @@ body {
     transition: all 0.3s ease;
     margin-top: 10px;
     letter-spacing: 0.8px;
-    box-shadow: 0 6px 14px rgba(43, 82, 152, 0.3);
+    box-shadow: 0 6px 14px rgba(99, 102, 241, 0.3);
 }
 
 .register-form button:hover {
-    background: linear-gradient(90deg, #1e3c72, #5a3e85);
     transform: scale(1.02);
-    box-shadow: 0 10px 20px rgba(43, 82, 152, 0.4);
+    background: linear-gradient(90deg, #4f46e5, #7c3aed);
+    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.4);
 }
 
 .register-form button:active {
     transform: scale(0.98);
 }
 
-/* ---------- Link to Login ---------- */
+/* ---------- Link ---------- */
 .link {
     text-align: center;
     margin-top: 28px;
-    color: #475569;
+    color: #cbd5e1;
     font-size: 0.95rem;
 }
 
 .link a {
-    color: #2a5298;
+    color: #8b5cf6;
     text-decoration: none;
     font-weight: 700;
     transition: all 0.2s;
 }
 
 .link a:hover {
-    color: #6b4e9e;
+    color: #a78bfa;
     text-decoration: underline;
 }
 
@@ -181,6 +201,7 @@ body {
         opacity: 0;
         transform: translateY(40px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -188,29 +209,33 @@ body {
 }
 
 @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-6px); }
-    75% { transform: translateX(6px); }
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-6px);
+    }
+
+    75% {
+        transform: translateX(6px);
+    }
 }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 550px) {
-    .register-page {
-        max-width: 100%;
-    }
     .register-form {
         padding: 30px 22px;
     }
+
     .register-header h1 {
         font-size: 1.6rem;
     }
-    .register-header img {
-        width: 60px;
-        height: 60px;
-    }
+
     .register-form h2 {
         font-size: 1.5rem;
     }
+
     .register-form button {
         font-size: 1rem;
         padding: 12px;
@@ -221,6 +246,7 @@ body {
     .register-form {
         padding: 25px 18px;
     }
+
     .register-form input {
         padding: 12px 14px;
         margin-bottom: 16px;

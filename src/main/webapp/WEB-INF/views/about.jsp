@@ -346,15 +346,16 @@
                     <img src="${pageContext.request.contextPath}/static/images/team/darshan.jpg" alt="Darshan Gurung"/>
                 </div>
                 <div class="team-body">
-                    <p class="team-role">Module 2 — Home &amp; Navigation</p>
+                    <p class="team-role">Module 6 — Database &amp; Integration</p>
                     <h3 class="team-name">Darshan Gurung</h3>
-                    <p class="team-desc">Owns the home page with dynamic featured perfumes, the shared navbar and footer used across all pages, the About page, contact page with backend form submission, and basic routing.</p>
+                    <p class="team-desc">Designs the full database — tables, relationships, SQL schema, and ER diagram. Connects the database with all modules, fixes integration issues, and ensures the entire platform runs smoothly.</p>
                     <ul class="team-tags">
-                        <li>Home Page</li>
-                        <li>Navbar &amp; Footer</li>
-                        <li>About &amp; Contact Page</li>
-                        <li>Basic Routing</li>
+                        <li>Database Design</li>
+                        <li>SQL Schema &amp; ER Diagram</li>
+                        <li>Module Integration</li>
+                        <li>System Debugging</li>
                     </ul>
+
                 </div>
             </div>
 
@@ -380,14 +381,14 @@
                     <img src="${pageContext.request.contextPath}/static/images/team/samundra.jpg" alt="Samundra Shahi"/>
                 </div>
                 <div class="team-body">
-                    <p class="team-role">Module 6 — Database &amp; Integration</p>
+                    <p class="team-role">Module 2 — Home &amp; Navigation</p>
                     <h3 class="team-name">Samundra Shahi</h3>
-                    <p class="team-desc">Designs the full database — tables, relationships, SQL schema, and ER diagram. Connects the database with all modules, fixes integration issues, and ensures the entire platform runs smoothly.</p>
+                    <p class="team-desc">Owns the home page with dynamic featured perfumes, the shared navbar and footer used across all pages, the About page, contact page with backend form submission, and basic routing.</p>
                     <ul class="team-tags">
-                        <li>Database Design</li>
-                        <li>SQL Schema &amp; ER Diagram</li>
-                        <li>Module Integration</li>
-                        <li>System Debugging</li>
+                        <li>Home Page</li>
+                        <li>Navbar &amp; Footer</li>
+                        <li>About &amp; Contact Page</li>
+                        <li>Basic Routing</li>
                     </ul>
                 </div>
             </div>
