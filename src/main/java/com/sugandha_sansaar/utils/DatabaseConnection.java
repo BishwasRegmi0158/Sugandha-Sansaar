@@ -6,9 +6,11 @@ import java.sql.SQLException;
 
 public class DatabaseConnection {
 
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/sugandha_sansaar";
-    private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "";
+    // Reads from environment variables (used on Render).
+    // Falls back to local XAMPP/MySQL values when running on your own PC.
+    private static final String DB_URL = getEnv("DB_URL", "jdbc:mysql://localhost:3306/sugandha_sansaar");
+    private static final String DB_USER = getEnv("DB_USER", "root");
+    private static final String DB_PASSWORD = getEnv("DB_PASSWORD", "");
 
     static {
         try {
@@ -16,6 +18,11 @@ public class DatabaseConnection {
         } catch (ClassNotFoundException e) {
             System.out.println("MySQL Driver not found: " + e.getMessage());
         }
+    }
+
+    private static String getEnv(String name, String defaultValue) {
+        String value = System.getenv(name);
+        return (value == null || value.isBlank()) ? defaultValue : value;
     }
 
     public static Connection getConnection() throws SQLException {

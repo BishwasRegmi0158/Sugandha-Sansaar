@@ -12,6 +12,10 @@ target/
 *.iws
 *.iml
 *.ipr
+# Local/secret files
+.env
+*.pem
+*.sql
 
 ### Eclipse ###
 .apt_generated

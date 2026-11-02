@@ -12,7 +12,7 @@
     <properties>
         <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <cargo.servlet.port>9090</cargo.servlet.port>
+        <cargo.servlet.port>8080</cargo.servlet.port>
         <!-- Database connection properties (adjust for your environment) -->
         <db.url>jdbc:mysql://localhost:3306/sugandha_sansaar</db.url>
         <db.user>root</db.user>
