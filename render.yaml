@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: sugandha-sansaar
+    runtime: docker
+    plan: free
+    branch: main
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: PORT
+        value: "8080"
+      - key: DB_USER
+        value: avnadmin
+      - key: DB_URL
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
