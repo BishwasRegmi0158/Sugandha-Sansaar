@@ -52,6 +52,12 @@ public class AuthenticationFilter implements Filter {
             return;
         }
 
+        // Health check for uptime monitors: no login, no session
+        if ("/health".equals(path)) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         // Pages that are only for guests (logged-out users)
         boolean isAuthPage = "/login".equals(path) || "/register".equals(path);
 
